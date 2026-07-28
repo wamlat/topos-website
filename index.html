@@ -23,6 +23,7 @@
   <span>TOPOS LABS</span>
 </header>
 
+<canvas id="sea" aria-hidden="true"></canvas>
 <div id="etale" aria-hidden="true"></div>
 
 <main class="paper">
@@ -56,121 +57,23 @@
     <p class="keywords">topos theory &middot; sheaves &middot; software</p>
   </section>
 
-  <!-- ———————————————————— §1 ———————————————————— -->
+  <!-- ———————————————————— the plate ———————————————————— -->
   <section class="reveal">
-    <h2><span class="secno">1</span>Definitions</h2>
-
-    <div class="env" role="note">
-      <p>
-        <span class="env-head">Definition 1.1</span> <span class="env-name">(topos)</span>.
-        A category \(\mathcal{E} \simeq \mathrm{Sh}(\mathcal{C}, J)\) that behaves
-        like sheaves on a space: finite limits, exponentials, and a
-        <em>subobject classifier</em> \(\Omega\).
-      </p>
-    </div>
-
-    <figure class="fig" id="fig1">
+    <figure class="fig" id="fig-hopf">
       <div class="figbox">
-        <svg viewBox="0 0 440 300" role="img" aria-label="Commutative pullback square: A maps to the terminal object 1 and into X; X maps to Omega by the characteristic map; 1 maps to Omega by true. The square is a pullback.">
-          <!-- nodes -->
-          <g class="d-node" style="--i:0"><text x="100" y="78">A</text></g>
-          <g class="d-node" style="--i:1"><text x="340" y="78">1</text></g>
-          <g class="d-node" style="--i:2"><text x="100" y="238">X</text></g>
-          <g class="d-node" style="--i:3"><text x="340" y="238">&Omega;</text></g>
-          <!-- pullback corner -->
-          <path class="d-edge corner" style="--i:8" d="M 118 96 L 134 96 L 134 112" />
-          <!-- arrows (heads are separate so they appear after each shaft draws) -->
-          <path class="d-edge" style="--i:4" d="M 122 72 L 316 72"/>
-          <path class="d-head" style="--i:4" d="M 309 66.5 L 318 72 L 309 77.5"/>
-          <text class="d-lab" style="--i:4" x="220" y="60">!</text>
-          <path class="d-edge" style="--i:5" d="M 100 92 L 100 210"/>
-          <path class="d-head" style="--i:5" d="M 94.5 203 L 100 212 L 105.5 203"/>
-          <text class="d-lab" style="--i:5" x="84" y="156">m</text>
-          <path class="d-edge red" style="--i:6" d="M 340 92 L 340 210"/>
-          <path class="d-head red" style="--i:6" d="M 334.5 203 L 340 212 L 345.5 203"/>
-          <text class="d-lab red" style="--i:6" x="372" y="156">true</text>
-          <path class="d-edge dashed" style="--i:7" d="M 122 232 L 316 232"/>
-          <path class="d-head" style="--i:7" d="M 309 226.5 L 318 232 L 309 237.5"/>
-          <text class="d-lab" style="--i:7" x="220" y="260">&exist;! &chi;<tspan baseline-shift="sub" font-size="12">A</tspan></text>
-        </svg>
+        <canvas id="hopf" aria-label="Animated Hopf fibration: nested tori of linked circles, breathing and rotating"></canvas>
       </div>
       <figcaption>
-        <strong>Figure 1.</strong> Every part is a pullback of
-        <span class="red-word">true</span>.
-      </figcaption>
-    </figure>
-
-    <div class="env" role="note">
-      <p>
-        <span class="env-head">Definition 1.2</span> <span class="env-name">(Topos Labs)</span>.
-        A small research and software studio. Objects: systems. Morphisms: the
-        maps that preserve what matters.
-      </p>
-    </div>
-  </section>
-
-  <!-- ———————————————————— §2 ———————————————————— -->
-  <section class="reveal">
-    <h2><span class="secno">2</span>The sheaf condition</h2>
-
-    <p>
-      Local data that agree on overlaps glue — <em>uniquely</em> — into global data:
-    </p>
-
-    <div class="display-eq">
-      $$F(U) \longrightarrow \prod_i F(U_i) \rightrightarrows \prod_{i,j} F(U_i \cap U_j) \tag{1}$$
-    </div>
-
-    <p>
-      Most failures of engineering are failures of (1). We design the overlaps first.
-    </p>
-
-    <figure class="fig" id="fig2">
-      <div class="figbox">
-        <svg id="glue-svg" viewBox="0 0 500 290" role="img" aria-label="Two local sections drawn over overlapping open sets U1 and U2 of a base space X. They agree on the overlap, and can be glued into a single global section.">
-          <!-- overlap shading -->
-          <rect class="g-overlap" x="205" y="30" width="95" height="215" />
-          <!-- base space -->
-          <line class="g-base" x1="30" y1="245" x2="470" y2="245"/>
-          <text class="g-lab base-lab" x="478" y="250">X</text>
-          <!-- open set bands -->
-          <g id="u1" class="g-band" tabindex="0" aria-label="Open set U1">
-            <path class="g-bracket blue" d="M 65 262 Q 60 262 60 256 L 60 250 M 60 250 L 60 256 Q 60 262 65 262 L 295 262 Q 300 262 300 256 L 300 250"/>
-            <text class="g-lab blue" x="165" y="281">U&#8321;</text>
-          </g>
-          <g id="u2" class="g-band" tabindex="0" aria-label="Open set U2">
-            <path class="g-bracket red" d="M 210 228 Q 205 228 205 234 L 205 240 M 205 240 L 205 234 Q 205 228 210 228 L 435 228 Q 440 228 440 234 L 440 240"/>
-            <text class="g-lab red" x="355" y="222">U&#8322;</text>
-          </g>
-          <!-- glued bracket (hidden until glued) -->
-          <g id="u12" class="g-band glued-only">
-            <path class="g-bracket ink" d="M 65 262 Q 60 262 60 256 L 60 250 M 60 250 L 60 256 Q 60 262 65 262 L 435 262 Q 440 262 440 256 L 440 250"/>
-            <text class="g-lab ink" x="245" y="281">U&#8321; &cup; U&#8322;</text>
-          </g>
-          <!-- sections -->
-          <path id="s1" class="g-sec blue" d="M 60 150 C 100 105, 145 175, 205 138 C 235 120, 270 120, 300 138"/>
-          <path id="s2" class="g-sec red"  d="M 205 138 C 235 120, 270 120, 300 138 C 345 163, 395 100, 440 125"/>
-          <path id="s12" class="g-sec ink glued-only" d="M 60 150 C 100 105, 145 175, 205 138 C 235 120, 270 120, 300 138 C 345 163, 395 100, 440 125"/>
-          <text id="s1lab" class="g-lab blue" x="88" y="102">s&#8321;</text>
-          <text id="s2lab" class="g-lab red" x="404" y="92">s&#8322;</text>
-          <text id="s12lab" class="g-lab ink glued-only" x="240" y="100">s</text>
-          <!-- agreement note over overlap -->
-          <text id="agree" class="g-lab pencil" x="252" y="185">s&#8321; = s&#8322; here</text>
-        </svg>
-        <div class="fig-controls">
-          <button id="glue-btn" type="button" aria-pressed="false">Glue sections</button>
-          <span id="glue-state" class="fig-state" role="status">two local sections, agreeing on U&#8321; &cap; U&#8322;</span>
-        </div>
-      </div>
-      <figcaption>
-        <strong>Figure 2.</strong> Press glue.
+        <strong>Figure 1.</strong> The Hopf fibration
+        \(S^1 \hookrightarrow S^3 \to S^2\). Every fiber is a circle; any two
+        are linked. <span class="pencil-note">(Move your pointer.)</span>
       </figcaption>
     </figure>
   </section>
 
-  <!-- ———————————————————— §3 ———————————————————— -->
+  <!-- ———————————————————— contact ———————————————————— -->
   <section class="reveal">
-    <h2><span class="secno">3</span>Morphisms welcome</h2>
+    <h2>Morphisms welcome</h2>
     <p>
       Write to <a href="mailto:hello@toposlabs.com">hello@toposlabs.com</a>.
       We read everything that commutes.

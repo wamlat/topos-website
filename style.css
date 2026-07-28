@@ -76,6 +76,15 @@ a:hover { color: var(--red); }
   padding: 3rem 1.5rem 4rem;
 }
 
+/* ———— the rising sea ———— */
+
+#sea {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* ———— étale layer: marginalia revealed in a neighborhood of the cursor ———— */
 
 #etale {
@@ -303,7 +312,8 @@ p { margin: 0 0 1.1rem; }
   padding: 1.4rem 1rem 0.9rem;
 }
 
-.figbox svg {
+.figbox svg,
+.figbox canvas {
   display: block;
   width: 100%;
   height: auto;
@@ -319,172 +329,14 @@ figcaption {
 }
 figcaption strong { font-weight: 700; }
 
-/* ———— Figure 1: commutative diagram ———— */
+/* ———— Figure 1: Hopf fibration canvas ———— */
 
-#fig1 text {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.5rem;
-  fill: var(--ink);
-  text-anchor: middle;
-  dominant-baseline: middle;
+#hopf {
+  max-width: none;
+  cursor: crosshair;
 }
 
-#fig1 .d-lab { font-size: 1.05rem; }
-#fig1 .d-lab.red { fill: var(--red); }
-
-#fig1 .d-edge {
-  stroke: var(--ink);
-  stroke-width: 1.4;
-  fill: none;
-  stroke-linecap: round;
-}
-#fig1 .d-edge.red { stroke: var(--red); }
-#fig1 .d-edge.dashed { stroke-dasharray: 5 5; }
-#fig1 .d-edge.corner { stroke: var(--pencil); stroke-width: 1.1; }
-
-#fig1 .d-head {
-  stroke: var(--ink);
-  stroke-width: 1.4;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-#fig1 .d-head.red { stroke: var(--red); }
-
-/* draw-on-load animation, staggered by --i */
-
-@media (prefers-reduced-motion: no-preference) {
-  #fig1.animate .d-node,
-  #fig1.animate .d-lab {
-    opacity: 0;
-    animation: fadein 0.5s ease-out forwards;
-    animation-delay: calc(var(--i) * 0.28s + 0.2s);
-  }
-  #fig1.animate .d-edge {
-    stroke-dasharray: 260;
-    stroke-dashoffset: 260;
-    animation: draw 0.7s ease-in-out forwards;
-    animation-delay: calc(var(--i) * 0.28s + 0.2s);
-  }
-  #fig1.animate .d-edge.dashed {
-    /* dashed arrows fade instead of draw (dashoffset would slide the dashes) */
-    stroke-dasharray: 5 5;
-    stroke-dashoffset: 0;
-    opacity: 0;
-    animation: fadein 0.7s ease-in-out forwards;
-    animation-delay: calc(var(--i) * 0.28s + 0.2s);
-  }
-  #fig1.animate .d-head {
-    /* arrowheads land just as their shaft finishes drawing */
-    opacity: 0;
-    animation: fadein 0.25s ease-out forwards;
-    animation-delay: calc(var(--i) * 0.28s + 0.8s);
-  }
-}
-
-@keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes fadein { to { opacity: 1; } }
-
-/* ———— Figure 2: interactive gluing ———— */
-
-#fig2 text {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.05rem;
-  text-anchor: middle;
-  fill: var(--ink);
-}
-
-#fig2 .g-lab.blue { fill: var(--blue); }
-#fig2 .g-lab.red { fill: var(--red); }
-#fig2 .g-lab.ink { fill: var(--ink); }
-#fig2 .g-lab.pencil { fill: var(--pencil); font-size: 0.85rem; }
-#fig2 .base-lab { font-size: 1.2rem; }
-
-#fig2 .g-base { stroke: var(--ink); stroke-width: 1.3; }
-
-#fig2 .g-overlap {
-  fill: var(--blue-wash);
-  transition: fill 0.5s ease;
-}
-
-#fig2 .g-bracket {
-  fill: none;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-}
-#fig2 .g-bracket.blue { stroke: var(--blue); }
-#fig2 .g-bracket.red { stroke: var(--red); }
-#fig2 .g-bracket.ink { stroke: var(--ink); }
-
-#fig2 .g-sec {
-  fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  transition: opacity 0.6s ease, stroke-width 0.2s ease;
-}
-#fig2 .g-sec.blue { stroke: var(--blue); }
-#fig2 .g-sec.red { stroke: var(--red); }
-#fig2 .g-sec.ink { stroke: var(--ink); }
-
-#fig2 .g-band { cursor: default; }
-#fig2 .g-band, #fig2 .g-lab, #fig2 .g-sec { transition: opacity 0.6s ease; }
-
-/* hover a band → its section thickens */
-#glue-svg:not(.glued) #u1:hover ~ #s1,
-#glue-svg:not(.glued) #u1:focus ~ #s1 { stroke-width: 3.4; }
-#glue-svg:not(.glued) #u2:hover ~ #s2,
-#glue-svg:not(.glued) #u2:focus ~ #s2 { stroke-width: 3.4; }
-
-/* glued-state toggling */
-#fig2 .glued-only { opacity: 0; pointer-events: none; }
-#glue-svg.glued .glued-only { opacity: 1; }
-
-/* the global section draws itself when glued */
-@media (prefers-reduced-motion: no-preference) {
-  #glue-svg.glued #s12 {
-    opacity: 1;
-    transition: none;
-    stroke-dasharray: 520;
-    stroke-dashoffset: 520;
-    animation: draw 0.9s ease-out forwards;
-  }
-}
-#glue-svg.glued #s1, #glue-svg.glued #s2,
-#glue-svg.glued #u1, #glue-svg.glued #u2,
-#glue-svg.glued #s1lab, #glue-svg.glued #s2lab,
-#glue-svg.glued #agree { opacity: 0; }
-#glue-svg.glued .g-overlap { fill: transparent; }
-
-.fig-controls {
-  display: flex;
-  align-items: baseline;
-  gap: 0.9rem;
-  margin-top: 0.9rem;
-  flex-wrap: wrap;
-}
-
-#glue-btn {
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
-  color: var(--paper);
-  background: var(--ink);
-  border: 1px solid var(--ink);
-  padding: 0.42rem 0.95rem;
-  cursor: pointer;
-  border-radius: 2px;
-}
-#glue-btn:hover { background: var(--blue); border-color: var(--blue); }
-#glue-btn[aria-pressed="true"] { background: var(--red); border-color: var(--red); }
-#glue-btn[aria-pressed="true"]:hover { background: var(--ink); border-color: var(--ink); }
-
-.fig-state {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  color: var(--pencil);
-}
 
 /* ———— references ———— */
 
