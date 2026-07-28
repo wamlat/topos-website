@@ -168,11 +168,11 @@
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      var level = H * (0.965 - 0.27 * scrollFrac());
-      for (var L = 0; L < 3; L++) {
-        var amp = 5 + L * 5;
-        var kx = 0.011 - L * 0.003;
-        var top = level + L * 12;
+      var level = H * (0.88 - 0.36 * scrollFrac());
+      for (var L = 0; L < 4; L++) {
+        var amp = 8 + L * 7;
+        var kx = 0.010 - L * 0.0022;
+        var top = level + L * 16;
         ctx.beginPath();
         ctx.moveTo(0, H);
         for (var x = 0; x <= W; x += 8) {
@@ -180,11 +180,11 @@
         }
         ctx.lineTo(W, H);
         ctx.closePath();
-        ctx.fillStyle = rgba(RED, 0.05);
+        ctx.fillStyle = rgba(RED, 0.10 - L * 0.015);
         ctx.fill();
         if (L === 0) {
-          ctx.strokeStyle = rgba(RED, 0.22);
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = rgba(RED, 0.4);
+          ctx.lineWidth = 1.2;
           ctx.stroke();
         }
       }
