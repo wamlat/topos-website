@@ -3,98 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Topos Labs — an existence proof</title>
-<meta name="description" content="Topos Labs is a research and software studio. We glue local structure into global understanding.">
+<title>Topos Labs</title>
+<meta name="description" content="Topos Labs — Wir müssen wissen, wir werden wissen.">
 <meta property="og:title" content="Topos Labs">
-<meta property="og:description" content="An existence proof. We glue local structure into global understanding.">
+<meta property="og:description" content="Wir müssen wissen — wir werden wissen.">
 <meta property="og:url" content="https://toposlab.com">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FCFBF7'/%3E%3Ctext x='16' y='24' font-size='24' text-anchor='middle' font-family='Georgia,serif' fill='%231C1B1A'%3E%CE%A9%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="running-head" aria-hidden="true">
-  <span>arXiv:2026.0728v1&nbsp;&nbsp;[math.CT]&nbsp;&nbsp;28 Jul 2026</span>
-  <span>TOPOS LABS</span>
-</header>
-
-<canvas id="sea" aria-hidden="true"></canvas>
 <div id="etale" aria-hidden="true"></div>
 
-<main class="paper">
-
-  <!-- ———————————————————— title block ———————————————————— -->
-  <section class="titleblock">
+<main class="hero">
+  <div class="titleblock">
     <div class="cover" aria-hidden="true">
       <span class="o o1"></span>
       <span class="o o2"></span>
       <span class="o o3"></span>
     </div>
     <h1 class="title">Topos Labs</h1>
-    <p class="subtitle">an existence proof</p>
-    <p class="authors">
-      The Laboratory<sup>&dagger;</sup>
-    </p>
-    <p class="affil">
-      <sup>&dagger;</sup>Correspondence: <a href="mailto:hello@toposlab.com">hello@toposlab.com</a>
-    </p>
     <p class="epigraph">&ldquo;Wir m&uuml;ssen wissen &mdash; wir werden wissen&rdquo;<span class="epigraph-attr"> &mdash; David Hilbert</span></p>
-  </section>
+  </div>
 
-  <section class="abstract reveal">
-    <h2 class="abstract-head">Abstract</h2>
-    <p>
-      We exhibit a laboratory \(\mathcal{L}\) through which every hard problem
-      factors into local pieces that glue. The proof is constructive; it is
-      this website.
-    </p>
-    <p class="keywords">topos theory &middot; sheaves &middot; software</p>
-  </section>
-
-  <!-- ———————————————————— the plate ———————————————————— -->
-  <section class="reveal">
-    <figure class="fig" id="fig-hopf">
-      <div class="figbox">
-        <canvas id="hopf" aria-label="Animated Hopf fibration: nested tori of linked circles, breathing and rotating"></canvas>
-      </div>
-      <figcaption>
-        <strong>Figure 1.</strong> The Hopf fibration
-        \(S^1 \hookrightarrow S^3 \to S^2\). Every fiber is a circle; any two
-        are linked. <span class="pencil-note">(Move your pointer.)</span>
-      </figcaption>
-    </figure>
-  </section>
-
-  <!-- ———————————————————— contact ———————————————————— -->
-  <section class="reveal">
-    <h2>Morphisms welcome</h2>
-    <p>
-      Write to <a href="mailto:hello@toposlab.com">hello@toposlab.com</a>.
-      We read everything that commutes.
-    </p>
-
-    <h3 class="refs-head">References</h3>
-    <ol class="refs">
-      <li>Topos Labs, <em>Source code and other local data</em>, <a href="https://github.com/wamlat" rel="noopener">github.com/wamlat</a>.</li>
-      <li>S. Mac&nbsp;Lane and I. Moerdijk, <em>Sheaves in Geometry and Logic</em>, Springer, 1992.</li>
-      <li>M. Artin, A. Grothendieck, and J.-L. Verdier, <em>SGA&nbsp;4</em>, Springer LNM 269, 1972.</li>
-    </ol>
-  </section>
-
-  <footer class="colophon">
-    <span class="qed" aria-label="end of proof">&#8718;</span>
-    <p>a global section over <a href="https://toposlab.com">toposlab.com</a> &middot; &copy; 2026 Topos Labs</p>
-  </footer>
-
+  <canvas id="hopf" aria-label="Animated Hopf fibration: nested tori of linked circles, breathing and rotating"></canvas>
 </main>
 
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
 <script defer src="main.js"></script>
 </body>
 </html>

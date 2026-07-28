@@ -1,10 +1,6 @@
 /* ————————————————————————————————————————————————
-   Topos Labs — a preprint that happens to be a website
-   Palette:
-     paper   #FCFBF7   ink     #1C1B1A
-     blue    #2D59A5   (LaTeX hyperref blue — links, U₁, arrows)
-     red     #BE3D2E   (red pen — true, U₂, emphasis)
-     pencil  #8D897E   (rules, captions, marginalia)
+   Topos Labs
+   paper #FCFBF7 · ink #1C1B1A · blue #2D59A5 · red #BE3D2E · pencil #8D897E
    ———————————————————————————————————————————————— */
 
 :root {
@@ -13,79 +9,26 @@
   --blue: #2D59A5;
   --red: #BE3D2E;
   --pencil: #8D897E;
-  --rule: #DDD9CE;
-  --blue-wash: rgba(45, 89, 165, 0.07);
-  --red-wash: rgba(190, 61, 46, 0.07);
-  --serif: "STIX Two Text", "STIX Two Text Fallback", Georgia, serif;
-  --mono: "IBM Plex Mono", ui-monospace, monospace;
-  --measure: 44rem;
+  --serif: "STIX Two Text", Georgia, serif;
 }
 
 * { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--serif);
-  font-size: 1.075rem;
-  line-height: 1.65;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: var(--blue);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-}
-a:hover { color: var(--red); }
-
 :focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 2px;
-  border-radius: 1px;
 }
 
 ::selection { background: rgba(45, 89, 165, 0.18); }
-
-/* ———— running head ———— */
-
-.running-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  max-width: calc(var(--measure) + 4rem);
-  margin: 0 auto;
-  padding: 1.1rem 2rem 0;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: var(--pencil);
-}
-
-/* ———— page column ———— */
-
-.paper {
-  position: relative;
-  z-index: 1;
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: 3rem 1.5rem 4rem;
-}
-
-/* ———— the rising sea ———— */
-
-#sea {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
 
 /* ———— étale layer: marginalia revealed in a neighborhood of the cursor ———— */
 
@@ -107,19 +50,48 @@ a:hover { color: var(--red); }
   #etale { display: none; }
 }
 
-/* ———— title block ———— */
+/* ———— hero ———— */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.25rem 1.5rem;
+}
 
 .titleblock {
   position: relative;
   text-align: center;
-  margin: 2.5rem 0 3rem;
+}
+
+.title {
+  font-size: clamp(3rem, 9vw, 5.25rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.epigraph {
+  margin: 1.4rem 0 0;
+  font-size: clamp(1rem, 2.6vw, 1.2rem);
+  font-style: italic;
+}
+
+.epigraph-attr {
+  font-style: normal;
+  color: var(--pencil);
 }
 
 /* an open cover of the title (open sets have dashed boundaries) */
 
 .cover {
   position: absolute;
-  inset: -3rem -14vw;
+  inset: -4rem -16vw;
   z-index: -1;
   pointer-events: none;
 }
@@ -153,246 +125,11 @@ a:hover { color: var(--red); }
 @keyframes drift2 { to { transform: translate(-30px, -10px) scale(1.06); } }
 @keyframes drift3 { to { transform: translate(14px, -16px) scale(0.95); } }
 
-.title {
-  font-size: clamp(2.6rem, 8vw, 4.2rem);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.05;
-  margin: 0;
-}
-
-.subtitle {
-  font-style: italic;
-  font-size: clamp(1.15rem, 3vw, 1.45rem);
-  color: var(--ink);
-  margin: 0.6rem 0 0;
-}
-.subtitle::before { content: "— "; color: var(--pencil); }
-.subtitle::after  { content: " —"; color: var(--pencil); }
-
-.authors {
-  margin: 2.2rem 0 0.2rem;
-  font-size: 1.15rem;
-  font-variant: small-caps;
-  letter-spacing: 0.05em;
-}
-
-.affil {
-  margin: 0;
-  font-size: 0.92rem;
-  color: var(--pencil);
-}
-
-.epigraph {
-  margin: 1.8rem 0 0;
-  font-size: 1.08rem;
-  font-style: italic;
-  color: var(--ink);
-}
-
-.epigraph-attr {
-  font-style: normal;
-  color: var(--pencil);
-}
-
-/* ———— abstract ———— */
-
-.abstract {
-  margin: 0 auto 1rem;
-  padding: 0 2.2rem;
-}
-
-.abstract-head {
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 700;
-  font-variant: small-caps;
-  letter-spacing: 0.08em;
-  margin: 0 0 0.6rem;
-}
-
-.abstract p { margin: 0 0 0.8rem; font-size: 0.98rem; }
-
-.keywords {
-  font-family: var(--mono);
-  font-size: 0.72rem !important;
-  color: var(--pencil);
-  letter-spacing: 0.03em;
-}
-
-/* ———— sections ———— */
-
-section { margin: 0 0 1rem; }
-
-h2 {
-  font-size: 1.35rem;
-  font-weight: 700;
-  margin: 3rem 0 1.1rem;
-}
-
-.secno {
-  display: inline-block;
-  min-width: 1.9rem;
-  color: var(--red);
-  font-weight: 600;
-}
-
-h2::after {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: var(--rule);
-  margin-top: 0.55rem;
-}
-
-p { margin: 0 0 1.1rem; }
-
-/* theorem-style environments */
-
-.env {
-  margin: 1.4rem 0;
-  padding-left: 1.1rem;
-  border-left: 2px solid var(--rule);
-}
-.env p { margin: 0; }
-
-.env-head { font-weight: 700; }
-.env-name { font-style: normal; }
-
-.remark { margin-top: 1.6rem; color: var(--ink); }
-
-.red-word { color: var(--red); font-style: italic; }
-.pencil-note { color: var(--pencil); }
-
-/* display equation */
-
-.display-eq {
-  margin: 1.4rem 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0.2rem 0;
-}
-
-/* ———— margin notes (Tufte-style) ———— */
-
-.has-note { position: relative; }
-
-.marginnote {
-  display: block;
-  margin: 0.6rem 0 0.9rem;
-  padding-left: 1.1rem;
-  border-left: 2px solid var(--rule);
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--pencil);
-}
-
-@media (min-width: 1240px) {
-  .marginnote {
-    position: absolute;
-    left: calc(100% + 2.4rem);
-    top: 0.2rem;
-    width: 13.5rem;
-    margin: 0;
-    padding-left: 0.85rem;
-  }
-}
-
-/* ———— figures ———— */
-
-.fig { margin: 2.2rem 0; }
-
-.figbox {
-  border: 1px solid var(--rule);
-  background:
-    radial-gradient(var(--rule) 0.8px, transparent 0.8px) 0 0 / 22px 22px,
-    #FFFEFB;
-  padding: 1.4rem 1rem 0.9rem;
-}
-
-.figbox svg,
-.figbox canvas {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 34rem;
-  margin: 0 auto;
-}
-
-figcaption {
-  font-size: 0.88rem;
-  color: var(--ink);
-  margin-top: 0.8rem;
-  line-height: 1.55;
-}
-figcaption strong { font-weight: 700; }
-
-/* ———— Figure 1: Hopf fibration canvas ———— */
+/* ———— the fibration, on the page itself ———— */
 
 #hopf {
-  max-width: none;
+  display: block;
+  width: min(100%, 58rem);
+  margin-top: 1rem;
   cursor: crosshair;
 }
-
-@keyframes fadein { to { opacity: 1; } }
-
-/* ———— references ———— */
-
-.refs-head {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 2.4rem 0 0.8rem;
-}
-
-.refs {
-  margin: 0;
-  padding-left: 1.6rem;
-  font-size: 0.92rem;
-}
-.refs li { margin-bottom: 0.45rem; }
-.refs li::marker { color: var(--pencil); }
-
-/* ———— colophon ———— */
-
-.colophon {
-  margin-top: 4rem;
-  text-align: center;
-}
-
-.qed {
-  display: block;
-  font-size: 1.1rem;
-  margin-bottom: 0.8rem;
-}
-
-.colophon p {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: var(--pencil);
-}
-.colophon a { color: var(--pencil); }
-
-/* ———— scroll reveal ———— */
-
-@media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.in { opacity: 1; transform: none; }
-}
-
-/* ———— small screens ———— */
-
-@media (max-width: 560px) {
-  body { font-size: 1rem; }
-  .paper { padding: 2rem 1.1rem 3rem; }
-  .abstract { padding: 0 0.4rem; }
-  .running-head { padding: 0.9rem 1.1rem 0; font-size: 0.62rem; }
-}
-
-/* KaTeX sizing harmony */
-.katex { font-size: 1.02em; }

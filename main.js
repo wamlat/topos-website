@@ -1,4 +1,4 @@
-/* Topos Labs — math rendering, étale layer, Hopf fibration, the rising sea */
+/* Topos Labs — étale layer + Hopf fibration */
 (function () {
   "use strict";
 
@@ -27,7 +27,7 @@
     ];
   }
 
-  /* ——— Figure 1: the Hopf fibration ———
+  /* ——— the Hopf fibration ———
      Fiber over (α, β) ∈ S²:  s ↦ (cos(β/2)e^{is}, sin(β/2)e^{i(s+α)}) ∈ S³,
      then a (softened) stereographic projection S³ → R³ and a slow tumble. */
   function initHopf(canvas) {
@@ -37,7 +37,7 @@
 
     function resize() {
       W = canvas.clientWidth || 600;
-      H = Math.round(W * 0.68);
+      H = Math.round(W * 0.62);
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       canvas.style.height = H + "px";
@@ -74,8 +74,7 @@
       var scale = H * 0.4, cx = W / 2, cy = H / 2;
 
       for (var k = 0; k < FIBERS; k++) {
-        var base = 2 * Math.PI * k / FIBERS;
-        var alpha = base + t * 0.12;
+        var alpha = 2 * Math.PI * k / FIBERS + t * 0.12;
         var col = mix(BLUE, RED, (1 - Math.cos(alpha)) / 2);
         var px = 0, py = 0;
         for (var i = 0; i <= SEG; i++) {
@@ -102,29 +101,6 @@
           px = sx; py = sy;
         }
       }
-
-      /* base-space inset: S² with the latitude being fibered */
-      var r0 = 26, bx = 52, by = H - 52;
-      ctx.strokeStyle = "rgba(141,137,126,0.8)";
-      ctx.lineWidth = 1;
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.arc(bx, by, r0, 0, 2 * Math.PI);
-      ctx.stroke();
-      var ry = by - r0 * Math.cos(beta);
-      var rx = r0 * Math.sin(beta);
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.ellipse(bx, ry, rx, rx * 0.3, 0, 0, 2 * Math.PI);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = rgba(RED, 0.9);
-      ctx.beginPath();
-      ctx.arc(bx + rx * Math.cos(t * 0.7), ry + rx * 0.3 * Math.sin(t * 0.7), 2.4, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.fillStyle = "rgba(141,137,126,1)";
-      ctx.font = "italic 13px 'STIX Two Text', Georgia, serif";
-      ctx.fillText("S²", bx + r0 + 7, by + 4);
     }
 
     if (reduceMotion) {
@@ -145,95 +121,7 @@
     })();
   }
 
-  /* ——— the rising sea (Grothendieck): red, at the bottom, higher as you scroll ——— */
-  function initSea(canvas) {
-    var ctx = canvas.getContext("2d");
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var W = 0, H = 0, t = 0;
-
-    function resize() {
-      W = window.innerWidth;
-      H = window.innerHeight;
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resize();
-    window.addEventListener("resize", resize);
-
-    function scrollFrac() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      return max > 0 ? Math.min(1, window.scrollY / max) : 0;
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      var level = H * (0.88 - 0.36 * scrollFrac());
-      for (var L = 0; L < 4; L++) {
-        var amp = 8 + L * 7;
-        var kx = 0.010 - L * 0.0022;
-        var top = level + L * 16;
-        ctx.beginPath();
-        ctx.moveTo(0, H);
-        for (var x = 0; x <= W; x += 8) {
-          ctx.lineTo(x, top + amp * Math.sin(x * kx + t * (0.5 + L * 0.22) + L * 2.1));
-        }
-        ctx.lineTo(W, H);
-        ctx.closePath();
-        ctx.fillStyle = rgba(RED, 0.10 - L * 0.015);
-        ctx.fill();
-        if (L === 0) {
-          ctx.strokeStyle = rgba(RED, 0.4);
-          ctx.lineWidth = 1.2;
-          ctx.stroke();
-        }
-      }
-    }
-
-    if (reduceMotion) {
-      draw();
-      window.addEventListener("scroll", draw, { passive: true });
-      window.addEventListener("resize", draw);
-      return;
-    }
-
-    (function frame() {
-      if (!document.hidden) {
-        t += 0.016;
-        draw();
-      }
-      requestAnimationFrame(frame);
-    })();
-  }
-
   onReady(function () {
-    // ——— KaTeX auto-render (scripts are deferred, so it exists by now) ———
-    if (window.renderMathInElement) {
-      window.renderMathInElement(document.body, {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "\\(", right: "\\)", display: false }
-        ],
-        throwOnError: false
-      });
-    }
-
-    // ——— scroll reveal ———
-    var revealed = document.querySelectorAll(".reveal");
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      revealed.forEach(function (el) { el.classList.add("in"); });
-    } else {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in");
-            io.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
-      revealed.forEach(function (el) { io.observe(el); });
-    }
-
     // ——— étale layer: reveal marginalia near the cursor ———
     var etale = document.getElementById("etale");
     if (etale && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduceMotion) {
@@ -249,8 +137,5 @@
 
     var hopf = document.getElementById("hopf");
     if (hopf && hopf.getContext) initHopf(hopf);
-
-    var sea = document.getElementById("sea");
-    if (sea && sea.getContext) initSea(sea);
   });
 })();
