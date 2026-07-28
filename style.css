@@ -1,0 +1,475 @@
+/* ————————————————————————————————————————————————
+   Topos Labs — a preprint that happens to be a website
+   Palette:
+     paper   #FCFBF7   ink     #1C1B1A
+     blue    #2D59A5   (LaTeX hyperref blue — links, U₁, arrows)
+     red     #BE3D2E   (red pen — true, U₂, emphasis)
+     pencil  #8D897E   (rules, captions, marginalia)
+   ———————————————————————————————————————————————— */
+
+:root {
+  --paper: #FCFBF7;
+  --ink: #1C1B1A;
+  --blue: #2D59A5;
+  --red: #BE3D2E;
+  --pencil: #8D897E;
+  --rule: #DDD9CE;
+  --blue-wash: rgba(45, 89, 165, 0.07);
+  --red-wash: rgba(190, 61, 46, 0.07);
+  --serif: "STIX Two Text", "STIX Two Text Fallback", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --measure: 44rem;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.075rem;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--blue);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--red); }
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+::selection { background: rgba(45, 89, 165, 0.18); }
+
+/* ———— running head ———— */
+
+.running-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: calc(var(--measure) + 4rem);
+  margin: 0 auto;
+  padding: 1.1rem 2rem 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--pencil);
+}
+
+/* ———— page column ———— */
+
+.paper {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+}
+
+/* ———— title block ———— */
+
+.titleblock {
+  text-align: center;
+  margin: 2.5rem 0 3rem;
+}
+
+.preprint-note {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--pencil);
+  margin: 0 0 2.2rem;
+}
+
+.title {
+  font-size: clamp(2.6rem, 8vw, 4.2rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.subtitle {
+  font-style: italic;
+  font-size: clamp(1.15rem, 3vw, 1.45rem);
+  color: var(--ink);
+  margin: 0.6rem 0 0;
+}
+.subtitle::before { content: "— "; color: var(--pencil); }
+.subtitle::after  { content: " —"; color: var(--pencil); }
+
+.authors {
+  margin: 2.2rem 0 0.2rem;
+  font-size: 1.15rem;
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+}
+
+.affil {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--pencil);
+}
+
+.dateline {
+  margin: 1.6rem 0 0;
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--pencil);
+}
+
+/* ———— abstract ———— */
+
+.abstract {
+  margin: 0 auto 1rem;
+  padding: 0 2.2rem;
+}
+
+.abstract-head {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.6rem;
+}
+
+.abstract p { margin: 0 0 0.8rem; font-size: 0.98rem; }
+
+.keywords {
+  font-family: var(--mono);
+  font-size: 0.72rem !important;
+  color: var(--pencil);
+  letter-spacing: 0.03em;
+}
+
+/* ———— sections ———— */
+
+section { margin: 0 0 1rem; }
+
+h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 3rem 0 1.1rem;
+}
+
+.secno {
+  display: inline-block;
+  min-width: 1.9rem;
+  color: var(--red);
+  font-weight: 600;
+}
+
+h2::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  margin-top: 0.55rem;
+}
+
+p { margin: 0 0 1.1rem; }
+
+/* theorem-style environments */
+
+.env {
+  margin: 1.4rem 0;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--rule);
+}
+.env p { margin: 0; }
+
+.env-head { font-weight: 700; }
+.env-name { font-style: normal; }
+
+.remark { margin-top: 1.6rem; color: var(--ink); }
+
+.red-word { color: var(--red); font-style: italic; }
+.pencil-note { color: var(--pencil); }
+
+/* display equation */
+
+.display-eq {
+  margin: 1.4rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2rem 0;
+}
+
+/* ———— margin notes (Tufte-style) ———— */
+
+.has-note { position: relative; }
+
+.marginnote {
+  display: block;
+  margin: 0.6rem 0 0.9rem;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--rule);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--pencil);
+}
+
+@media (min-width: 1240px) {
+  .marginnote {
+    position: absolute;
+    left: calc(100% + 2.4rem);
+    top: 0.2rem;
+    width: 13.5rem;
+    margin: 0;
+    padding-left: 0.85rem;
+  }
+}
+
+/* ———— figures ———— */
+
+.fig { margin: 2.2rem 0; }
+
+.figbox {
+  border: 1px solid var(--rule);
+  background:
+    radial-gradient(var(--rule) 0.8px, transparent 0.8px) 0 0 / 22px 22px,
+    #FFFEFB;
+  padding: 1.4rem 1rem 0.9rem;
+}
+
+.figbox svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+figcaption {
+  font-size: 0.88rem;
+  color: var(--ink);
+  margin-top: 0.8rem;
+  line-height: 1.55;
+}
+figcaption strong { font-weight: 700; }
+
+/* ———— Figure 1: commutative diagram ———— */
+
+#fig1 text {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  fill: var(--ink);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+#fig1 .d-lab { font-size: 1.05rem; }
+#fig1 .d-lab.red { fill: var(--red); }
+
+#fig1 .d-edge {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  fill: none;
+  stroke-linecap: round;
+}
+#fig1 .d-edge.red { stroke: var(--red); }
+#fig1 .d-edge.dashed { stroke-dasharray: 5 5; }
+#fig1 .d-edge.corner { stroke: var(--pencil); stroke-width: 1.1; }
+
+#fig1 .d-head {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#fig1 .d-head.red { stroke: var(--red); }
+
+/* draw-on-load animation, staggered by --i */
+
+@media (prefers-reduced-motion: no-preference) {
+  #fig1.animate .d-node,
+  #fig1.animate .d-lab {
+    opacity: 0;
+    animation: fadein 0.5s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.28s + 0.2s);
+  }
+  #fig1.animate .d-edge {
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+    animation: draw 0.7s ease-in-out forwards;
+    animation-delay: calc(var(--i) * 0.28s + 0.2s);
+  }
+  #fig1.animate .d-edge.dashed {
+    /* dashed arrows fade instead of draw (dashoffset would slide the dashes) */
+    stroke-dasharray: 5 5;
+    stroke-dashoffset: 0;
+    opacity: 0;
+    animation: fadein 0.7s ease-in-out forwards;
+    animation-delay: calc(var(--i) * 0.28s + 0.2s);
+  }
+  #fig1.animate .d-head {
+    /* arrowheads land just as their shaft finishes drawing */
+    opacity: 0;
+    animation: fadein 0.25s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.28s + 0.8s);
+  }
+}
+
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fadein { to { opacity: 1; } }
+
+/* ———— Figure 2: interactive gluing ———— */
+
+#fig2 text {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  text-anchor: middle;
+  fill: var(--ink);
+}
+
+#fig2 .g-lab.blue { fill: var(--blue); }
+#fig2 .g-lab.red { fill: var(--red); }
+#fig2 .g-lab.ink { fill: var(--ink); }
+#fig2 .g-lab.pencil { fill: var(--pencil); font-size: 0.85rem; }
+#fig2 .base-lab { font-size: 1.2rem; }
+
+#fig2 .g-base { stroke: var(--ink); stroke-width: 1.3; }
+
+#fig2 .g-overlap {
+  fill: var(--blue-wash);
+  transition: fill 0.5s ease;
+}
+
+#fig2 .g-bracket {
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+#fig2 .g-bracket.blue { stroke: var(--blue); }
+#fig2 .g-bracket.red { stroke: var(--red); }
+#fig2 .g-bracket.ink { stroke: var(--ink); }
+
+#fig2 .g-sec {
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  transition: opacity 0.6s ease, stroke-width 0.2s ease;
+}
+#fig2 .g-sec.blue { stroke: var(--blue); }
+#fig2 .g-sec.red { stroke: var(--red); }
+#fig2 .g-sec.ink { stroke: var(--ink); }
+
+#fig2 .g-band { cursor: default; }
+#fig2 .g-band, #fig2 .g-lab, #fig2 .g-sec { transition: opacity 0.6s ease; }
+
+/* hover a band → its section thickens */
+#glue-svg:not(.glued) #u1:hover ~ #s1,
+#glue-svg:not(.glued) #u1:focus ~ #s1 { stroke-width: 3.4; }
+#glue-svg:not(.glued) #u2:hover ~ #s2,
+#glue-svg:not(.glued) #u2:focus ~ #s2 { stroke-width: 3.4; }
+
+/* glued-state toggling */
+#fig2 .glued-only { opacity: 0; pointer-events: none; }
+#glue-svg.glued .glued-only { opacity: 1; }
+#glue-svg.glued #s1, #glue-svg.glued #s2,
+#glue-svg.glued #u1, #glue-svg.glued #u2,
+#glue-svg.glued #s1lab, #glue-svg.glued #s2lab,
+#glue-svg.glued #agree { opacity: 0; }
+#glue-svg.glued .g-overlap { fill: transparent; }
+
+.fig-controls {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  flex-wrap: wrap;
+}
+
+#glue-btn {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 0.42rem 0.95rem;
+  cursor: pointer;
+  border-radius: 2px;
+}
+#glue-btn:hover { background: var(--blue); border-color: var(--blue); }
+#glue-btn[aria-pressed="true"] { background: var(--red); border-color: var(--red); }
+#glue-btn[aria-pressed="true"]:hover { background: var(--ink); border-color: var(--ink); }
+
+.fig-state {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--pencil);
+}
+
+/* ———— references ———— */
+
+.refs-head {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 2.4rem 0 0.8rem;
+}
+
+.refs {
+  margin: 0;
+  padding-left: 1.6rem;
+  font-size: 0.92rem;
+}
+.refs li { margin-bottom: 0.45rem; }
+.refs li::marker { color: var(--pencil); }
+
+/* ———— colophon ———— */
+
+.colophon {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.qed {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.colophon p {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--pencil);
+}
+.colophon a { color: var(--pencil); }
+
+/* ———— scroll reveal ———— */
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in { opacity: 1; transform: none; }
+}
+
+/* ———— small screens ———— */
+
+@media (max-width: 560px) {
+  body { font-size: 1rem; }
+  .paper { padding: 2rem 1.1rem 3rem; }
+  .abstract { padding: 0 0.4rem; }
+  .running-head { padding: 0.9rem 1.1rem 0; font-size: 0.62rem; }
+}
+
+/* KaTeX sizing harmony */
+.katex { font-size: 1.02em; }

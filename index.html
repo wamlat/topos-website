@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topos Labs — an existence proof</title>
+<meta name="description" content="Topos Labs is a research and software studio. We glue local structure into global understanding.">
+<meta property="og:title" content="Topos Labs">
+<meta property="og:description" content="An existence proof. We glue local structure into global understanding.">
+<meta property="og:url" content="https://toposlabs.com">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FCFBF7'/%3E%3Ctext x='16' y='24' font-size='24' text-anchor='middle' font-family='Georgia,serif' fill='%231C1B1A'%3E%CE%A9%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="running-head" aria-hidden="true">
+  <span>arXiv:2026.0728v1&nbsp;&nbsp;[math.CT]&nbsp;&nbsp;28 Jul 2026</span>
+  <span>TOPOS LABS</span>
+</header>
+
+<main class="paper">
+
+  <!-- ———————————————————— title block ———————————————————— -->
+  <section class="titleblock">
+    <p class="preprint-note">Preprint. Not for distribution outside this universe.</p>
+    <h1 class="title">Topos Labs</h1>
+    <p class="subtitle">an existence proof</p>
+    <p class="authors">
+      The Laboratory<sup>&dagger;</sup>
+    </p>
+    <p class="affil">
+      <sup>&dagger;</sup>Correspondence: <a href="mailto:hello@toposlabs.com">hello@toposlabs.com</a>
+    </p>
+    <p class="dateline">Received 28 July 2026 &middot; Accepted immediately</p>
+  </section>
+
+  <section class="abstract reveal">
+    <h2 class="abstract-head">Abstract</h2>
+    <p>
+      We exhibit a laboratory \(\mathcal{L}\) with the following universal property:
+      for every hard problem \(P\), there exists a factorization of \(P\) through
+      \(\mathcal{L}\) into local pieces, each merely difficult, together with the
+      coherence data required to glue their solutions back into a whole. We call
+      this the <em>working sheaf condition</em>. Applications to software are
+      discussed. The proof is constructive; it is this website.
+    </p>
+    <p class="keywords">topos theory &middot; sheaves &middot; gluing &middot; software &middot; MSC 2020: 18B25, 68N01</p>
+  </section>
+
+  <!-- ———————————————————— §1 ———————————————————— -->
+  <section class="reveal">
+    <h2><span class="secno">1</span>Definitions</h2>
+
+    <div class="env" role="note">
+      <p>
+        <span class="env-head">Definition 1.1</span> <span class="env-name">(topos)</span>.
+        A <em>topos</em> is a category \(\mathcal{E}\) that behaves like the category
+        of sheaves of sets on a space,
+        \(\mathcal{E} \simeq \mathrm{Sh}(\mathcal{C}, J)\):
+        it has all finite limits, it is cartesian closed, and it possesses a
+        <em>subobject classifier</em> \(\Omega\) — a single object that knows, for
+        every object \(X\), every way of carving a part out of \(X\).
+      </p>
+    </div>
+
+    <p class="has-note">
+      The slogan, in the spirit of Grothendieck: <em>a topos is a universe in which
+      one can do mathematics.</em> Change the site and you change the universe — but
+      the logic comes along for the ride. We build software the same way: choose the
+      site carefully, and the rest follows by general nonsense.
+      <span class="marginnote">“General nonsense” is what category theorists
+      affectionately call their own machinery. It is the highest compliment
+      we know.</span>
+    </p>
+
+    <figure class="fig" id="fig1">
+      <div class="figbox">
+        <svg viewBox="0 0 440 300" role="img" aria-label="Commutative pullback square: A maps to the terminal object 1 and into X; X maps to Omega by the characteristic map; 1 maps to Omega by true. The square is a pullback.">
+          <!-- nodes -->
+          <g class="d-node" style="--i:0"><text x="100" y="78">A</text></g>
+          <g class="d-node" style="--i:1"><text x="340" y="78">1</text></g>
+          <g class="d-node" style="--i:2"><text x="100" y="238">X</text></g>
+          <g class="d-node" style="--i:3"><text x="340" y="238">&Omega;</text></g>
+          <!-- pullback corner -->
+          <path class="d-edge corner" style="--i:8" d="M 118 96 L 134 96 L 134 112" />
+          <!-- arrows (heads are separate so they appear after each shaft draws) -->
+          <path class="d-edge" style="--i:4" d="M 122 72 L 316 72"/>
+          <path class="d-head" style="--i:4" d="M 309 66.5 L 318 72 L 309 77.5"/>
+          <text class="d-lab" style="--i:4" x="220" y="60">!</text>
+          <path class="d-edge" style="--i:5" d="M 100 92 L 100 210"/>
+          <path class="d-head" style="--i:5" d="M 94.5 203 L 100 212 L 105.5 203"/>
+          <text class="d-lab" style="--i:5" x="84" y="156">m</text>
+          <path class="d-edge red" style="--i:6" d="M 340 92 L 340 210"/>
+          <path class="d-head red" style="--i:6" d="M 334.5 203 L 340 212 L 345.5 203"/>
+          <text class="d-lab red" style="--i:6" x="372" y="156">true</text>
+          <path class="d-edge dashed" style="--i:7" d="M 122 232 L 316 232"/>
+          <path class="d-head" style="--i:7" d="M 309 226.5 L 318 232 L 309 237.5"/>
+          <text class="d-lab" style="--i:7" x="220" y="260">&exist;! &chi;<tspan baseline-shift="sub" font-size="12">A</tspan></text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>Figure 1.</strong> The subobject classifier. Every property is a map
+        \(\chi_A\) to \(\Omega\); every part is a pullback of
+        <span class="red-word">true</span>. An agreeable way to think about truth:
+        it is something you pull back along your own point of view.
+      </figcaption>
+    </figure>
+
+    <div class="env" role="note">
+      <p>
+        <span class="env-head">Definition 1.2</span> <span class="env-name">(Topos Labs)</span>.
+        <em>Topos Labs</em> is a small research and software studio. Its objects are
+        systems; its morphisms are the maps that preserve what matters. It is not,
+        as far as we can verify, cartesian closed — but it is finitely complete, in
+        the sense that we finish what we start.
+      </p>
+    </div>
+  </section>
+
+  <!-- ———————————————————— §2 ———————————————————— -->
+  <section class="reveal">
+    <h2><span class="secno">2</span>The sheaf condition</h2>
+
+    <p>
+      A sheaf \(F\) on a space \(X\) assigns data to every open set, subject to one
+      law: whenever local data agree on the overlaps, they glue — <em>uniquely</em> —
+      into global data. For a cover \(U = \bigcup_i U_i\), the diagram
+    </p>
+
+    <div class="display-eq">
+      $$F(U) \longrightarrow \prod_i F(U_i) \rightrightarrows \prod_{i,j} F(U_i \cap U_j) \tag{1}$$
+    </div>
+
+    <p class="has-note">
+      is an equalizer. This single line is the entire philosophy of the laboratory.
+      Most failures of engineering — and of organizations — are failures of the
+      sheaf condition: locally excellent work that disagrees on the overlaps.
+      So we design the overlaps first.
+      <span class="marginnote">A <em>presheaf</em> is what you have before anyone
+      checks that the pieces agree. Much of the software industry ships
+      presheaves.</span>
+    </p>
+
+    <figure class="fig" id="fig2">
+      <div class="figbox">
+        <svg id="glue-svg" viewBox="0 0 500 290" role="img" aria-label="Two local sections drawn over overlapping open sets U1 and U2 of a base space X. They agree on the overlap, and can be glued into a single global section.">
+          <!-- overlap shading -->
+          <rect class="g-overlap" x="205" y="30" width="95" height="215" />
+          <!-- base space -->
+          <line class="g-base" x1="30" y1="245" x2="470" y2="245"/>
+          <text class="g-lab base-lab" x="478" y="250">X</text>
+          <!-- open set bands -->
+          <g id="u1" class="g-band" tabindex="0" aria-label="Open set U1">
+            <path class="g-bracket blue" d="M 65 262 Q 60 262 60 256 L 60 250 M 60 250 L 60 256 Q 60 262 65 262 L 295 262 Q 300 262 300 256 L 300 250"/>
+            <text class="g-lab blue" x="165" y="281">U&#8321;</text>
+          </g>
+          <g id="u2" class="g-band" tabindex="0" aria-label="Open set U2">
+            <path class="g-bracket red" d="M 210 228 Q 205 228 205 234 L 205 240 M 205 240 L 205 234 Q 205 228 210 228 L 435 228 Q 440 228 440 234 L 440 240"/>
+            <text class="g-lab red" x="355" y="222">U&#8322;</text>
+          </g>
+          <!-- glued bracket (hidden until glued) -->
+          <g id="u12" class="g-band glued-only">
+            <path class="g-bracket ink" d="M 65 262 Q 60 262 60 256 L 60 250 M 60 250 L 60 256 Q 60 262 65 262 L 435 262 Q 440 262 440 256 L 440 250"/>
+            <text class="g-lab ink" x="245" y="281">U&#8321; &cup; U&#8322;</text>
+          </g>
+          <!-- sections -->
+          <path id="s1" class="g-sec blue" d="M 60 150 C 100 105, 145 175, 205 138 C 235 120, 270 120, 300 138"/>
+          <path id="s2" class="g-sec red"  d="M 205 138 C 235 120, 270 120, 300 138 C 345 163, 395 100, 440 125"/>
+          <path id="s12" class="g-sec ink glued-only" d="M 60 150 C 100 105, 145 175, 205 138 C 235 120, 270 120, 300 138 C 345 163, 395 100, 440 125"/>
+          <text id="s1lab" class="g-lab blue" x="88" y="102">s&#8321;</text>
+          <text id="s2lab" class="g-lab red" x="404" y="92">s&#8322;</text>
+          <text id="s12lab" class="g-lab ink glued-only" x="240" y="100">s</text>
+          <!-- agreement note over overlap -->
+          <text id="agree" class="g-lab pencil" x="252" y="185">s&#8321; = s&#8322; here</text>
+        </svg>
+        <div class="fig-controls">
+          <button id="glue-btn" type="button" aria-pressed="false">Glue sections</button>
+          <span id="glue-state" class="fig-state" role="status">two local sections, agreeing on U&#8321; &cap; U&#8322;</span>
+        </div>
+      </div>
+      <figcaption>
+        <strong>Figure 2.</strong> Local sections \(s_1 \in F(U_1)\),
+        \(s_2 \in F(U_2)\) with \(s_1|_{U_1 \cap U_2} = s_2|_{U_1 \cap U_2}\).
+        Press glue. <span class="pencil-note">(Interactive. The mathematics is exact;
+        the geometry is impressionistic.)</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- ———————————————————— §3 ———————————————————— -->
+  <section class="reveal">
+    <h2><span class="secno">3</span>What the laboratory makes</h2>
+
+    <div class="env">
+      <p>
+        <span class="env-head">Example 3.1</span> <span class="env-name">(systems)</span>.
+        Software whose parts were designed to agree on their overlaps: interfaces,
+        protocols, infrastructure. Locality is a feature; coherence is the product.
+      </p>
+    </div>
+    <div class="env">
+      <p>
+        <span class="env-head">Example 3.2</span> <span class="env-name">(instruments)</span>.
+        Tools that let a person hold more structure in their head than fits there
+        naturally. A good instrument is a functor from a hard category to an easy one,
+        faithful where it counts.
+      </p>
+    </div>
+    <div class="env">
+      <p>
+        <span class="env-head">Example 3.3</span> <span class="env-name">(research)</span>.
+        Questions held long enough to become tools. We publish what generalizes.
+      </p>
+    </div>
+
+    <p class="remark">
+      <span class="env-head">Remark.</span> The laboratory is small by construction.
+      Small sites can present large topoi.
+    </p>
+  </section>
+
+  <!-- ———————————————————— §4 ———————————————————— -->
+  <section class="reveal">
+    <h2><span class="secno">4</span>Morphisms welcome</h2>
+    <p>
+      The laboratory admits maps in and out. To construct one, write to
+      <a href="mailto:hello@toposlabs.com">hello@toposlabs.com</a> with a description
+      of your source object. We read everything that commutes.
+    </p>
+
+    <h3 class="refs-head">References</h3>
+    <ol class="refs">
+      <li>The Laboratory, <a href="mailto:hello@toposlabs.com">hello@toposlabs.com</a>, personal communication, 2026&mdash;.</li>
+      <li>Topos Labs, <em>Source code and other local data</em>, <a href="https://github.com/wamlat" rel="noopener">github.com/wamlat</a>.</li>
+      <li>S. Mac&nbsp;Lane and I. Moerdijk, <em>Sheaves in Geometry and Logic: A First Introduction to Topos Theory</em>, Springer, 1992.</li>
+      <li>M. Artin, A. Grothendieck, and J.-L. Verdier, <em>SGA&nbsp;4: Théorie des topos et cohomologie étale des schémas</em>, Springer Lecture Notes in Mathematics 269, 1972.</li>
+    </ol>
+  </section>
+
+  <footer class="colophon">
+    <span class="qed" aria-label="end of proof">&#8718;</span>
+    <p>Typeset with STIX Two and KaTeX &middot; deployed as a global section over
+      <a href="https://toposlabs.com">toposlabs.com</a> &middot; &copy; 2026 Topos Labs</p>
+  </footer>
+
+</main>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="main.js"></script>
+</body>
+</html>
