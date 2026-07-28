@@ -111,7 +111,7 @@
 
     (function frame() {
       if (visible) {
-        t += 0.008;
+        t += 0.008 / 3;
         var auto = 1.2 + 0.55 * Math.sin(t * 0.5);
         var target = betaTarget === null ? auto : betaTarget;
         beta += (target - beta) * 0.05;

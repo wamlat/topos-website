@@ -87,44 +87,6 @@ body {
   color: var(--pencil);
 }
 
-/* an open cover of the title (open sets have dashed boundaries) */
-
-.cover {
-  position: absolute;
-  inset: -4rem -16vw;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.o {
-  position: absolute;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(45, 89, 165, 0.32);
-  background: radial-gradient(closest-side, rgba(45, 89, 165, 0.07), transparent 78%);
-}
-
-.o1 { width: 52%; height: 74%; left: -2%; top: 2%; }
-.o2 {
-  width: 56%; height: 80%; right: -3%; top: 14%;
-  border-color: rgba(190, 61, 46, 0.3);
-  background: radial-gradient(closest-side, rgba(190, 61, 46, 0.06), transparent 78%);
-}
-.o3 {
-  width: 34%; height: 46%; left: 34%; bottom: -6%;
-  border-color: rgba(141, 137, 126, 0.4);
-  background: radial-gradient(closest-side, rgba(141, 137, 126, 0.07), transparent 78%);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .o1 { animation: drift1 17s ease-in-out infinite alternate; }
-  .o2 { animation: drift2 21s ease-in-out infinite alternate; }
-  .o3 { animation: drift3 14s ease-in-out infinite alternate; }
-}
-
-@keyframes drift1 { to { transform: translate(26px, 12px) scale(1.05); } }
-@keyframes drift2 { to { transform: translate(-30px, -10px) scale(1.06); } }
-@keyframes drift3 { to { transform: translate(14px, -16px) scale(0.95); } }
-
 /* ———— the fibration, on the page itself ———— */
 
 #hopf {
