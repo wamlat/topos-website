@@ -23,10 +23,17 @@
   <span>TOPOS LABS</span>
 </header>
 
+<div id="etale" aria-hidden="true"></div>
+
 <main class="paper">
 
   <!-- ———————————————————— title block ———————————————————— -->
   <section class="titleblock">
+    <div class="cover" aria-hidden="true">
+      <span class="o o1"></span>
+      <span class="o o2"></span>
+      <span class="o o3"></span>
+    </div>
     <p class="preprint-note">Preprint. Not for distribution outside this universe.</p>
     <h1 class="title">Topos Labs</h1>
     <p class="subtitle">an existence proof</p>
@@ -42,14 +49,11 @@
   <section class="abstract reveal">
     <h2 class="abstract-head">Abstract</h2>
     <p>
-      We exhibit a laboratory \(\mathcal{L}\) with the following universal property:
-      for every hard problem \(P\), there exists a factorization of \(P\) through
-      \(\mathcal{L}\) into local pieces, each merely difficult, together with the
-      coherence data required to glue their solutions back into a whole. We call
-      this the <em>working sheaf condition</em>. Applications to software are
-      discussed. The proof is constructive; it is this website.
+      We exhibit a laboratory \(\mathcal{L}\) through which every hard problem
+      factors into local pieces that glue. The proof is constructive; it is
+      this website.
     </p>
-    <p class="keywords">topos theory &middot; sheaves &middot; gluing &middot; software &middot; MSC 2020: 18B25, 68N01</p>
+    <p class="keywords">topos theory &middot; sheaves &middot; software</p>
   </section>
 
   <!-- ———————————————————— §1 ———————————————————— -->
@@ -59,24 +63,11 @@
     <div class="env" role="note">
       <p>
         <span class="env-head">Definition 1.1</span> <span class="env-name">(topos)</span>.
-        A <em>topos</em> is a category \(\mathcal{E}\) that behaves like the category
-        of sheaves of sets on a space,
-        \(\mathcal{E} \simeq \mathrm{Sh}(\mathcal{C}, J)\):
-        it has all finite limits, it is cartesian closed, and it possesses a
-        <em>subobject classifier</em> \(\Omega\) — a single object that knows, for
-        every object \(X\), every way of carving a part out of \(X\).
+        A category \(\mathcal{E} \simeq \mathrm{Sh}(\mathcal{C}, J)\) that behaves
+        like sheaves on a space: finite limits, exponentials, and a
+        <em>subobject classifier</em> \(\Omega\).
       </p>
     </div>
-
-    <p class="has-note">
-      The slogan, in the spirit of Grothendieck: <em>a topos is a universe in which
-      one can do mathematics.</em> Change the site and you change the universe — but
-      the logic comes along for the ride. We build software the same way: choose the
-      site carefully, and the rest follows by general nonsense.
-      <span class="marginnote">“General nonsense” is what category theorists
-      affectionately call their own machinery. It is the highest compliment
-      we know.</span>
-    </p>
 
     <figure class="fig" id="fig1">
       <div class="figbox">
@@ -104,20 +95,16 @@
         </svg>
       </div>
       <figcaption>
-        <strong>Figure 1.</strong> The subobject classifier. Every property is a map
-        \(\chi_A\) to \(\Omega\); every part is a pullback of
-        <span class="red-word">true</span>. An agreeable way to think about truth:
-        it is something you pull back along your own point of view.
+        <strong>Figure 1.</strong> Every part is a pullback of
+        <span class="red-word">true</span>.
       </figcaption>
     </figure>
 
     <div class="env" role="note">
       <p>
         <span class="env-head">Definition 1.2</span> <span class="env-name">(Topos Labs)</span>.
-        <em>Topos Labs</em> is a small research and software studio. Its objects are
-        systems; its morphisms are the maps that preserve what matters. It is not,
-        as far as we can verify, cartesian closed — but it is finitely complete, in
-        the sense that we finish what we start.
+        A small research and software studio. Objects: systems. Morphisms: the
+        maps that preserve what matters.
       </p>
     </div>
   </section>
@@ -127,23 +114,15 @@
     <h2><span class="secno">2</span>The sheaf condition</h2>
 
     <p>
-      A sheaf \(F\) on a space \(X\) assigns data to every open set, subject to one
-      law: whenever local data agree on the overlaps, they glue — <em>uniquely</em> —
-      into global data. For a cover \(U = \bigcup_i U_i\), the diagram
+      Local data that agree on overlaps glue — <em>uniquely</em> — into global data:
     </p>
 
     <div class="display-eq">
       $$F(U) \longrightarrow \prod_i F(U_i) \rightrightarrows \prod_{i,j} F(U_i \cap U_j) \tag{1}$$
     </div>
 
-    <p class="has-note">
-      is an equalizer. This single line is the entire philosophy of the laboratory.
-      Most failures of engineering — and of organizations — are failures of the
-      sheaf condition: locally excellent work that disagrees on the overlaps.
-      So we design the overlaps first.
-      <span class="marginnote">A <em>presheaf</em> is what you have before anyone
-      checks that the pieces agree. Much of the software industry ships
-      presheaves.</span>
+    <p>
+      Most failures of engineering are failures of (1). We design the overlaps first.
     </p>
 
     <figure class="fig" id="fig2">
@@ -184,68 +163,30 @@
         </div>
       </div>
       <figcaption>
-        <strong>Figure 2.</strong> Local sections \(s_1 \in F(U_1)\),
-        \(s_2 \in F(U_2)\) with \(s_1|_{U_1 \cap U_2} = s_2|_{U_1 \cap U_2}\).
-        Press glue. <span class="pencil-note">(Interactive. The mathematics is exact;
-        the geometry is impressionistic.)</span>
+        <strong>Figure 2.</strong> Press glue.
       </figcaption>
     </figure>
   </section>
 
   <!-- ———————————————————— §3 ———————————————————— -->
   <section class="reveal">
-    <h2><span class="secno">3</span>What the laboratory makes</h2>
-
-    <div class="env">
-      <p>
-        <span class="env-head">Example 3.1</span> <span class="env-name">(systems)</span>.
-        Software whose parts were designed to agree on their overlaps: interfaces,
-        protocols, infrastructure. Locality is a feature; coherence is the product.
-      </p>
-    </div>
-    <div class="env">
-      <p>
-        <span class="env-head">Example 3.2</span> <span class="env-name">(instruments)</span>.
-        Tools that let a person hold more structure in their head than fits there
-        naturally. A good instrument is a functor from a hard category to an easy one,
-        faithful where it counts.
-      </p>
-    </div>
-    <div class="env">
-      <p>
-        <span class="env-head">Example 3.3</span> <span class="env-name">(research)</span>.
-        Questions held long enough to become tools. We publish what generalizes.
-      </p>
-    </div>
-
-    <p class="remark">
-      <span class="env-head">Remark.</span> The laboratory is small by construction.
-      Small sites can present large topoi.
-    </p>
-  </section>
-
-  <!-- ———————————————————— §4 ———————————————————— -->
-  <section class="reveal">
-    <h2><span class="secno">4</span>Morphisms welcome</h2>
+    <h2><span class="secno">3</span>Morphisms welcome</h2>
     <p>
-      The laboratory admits maps in and out. To construct one, write to
-      <a href="mailto:hello@toposlabs.com">hello@toposlabs.com</a> with a description
-      of your source object. We read everything that commutes.
+      Write to <a href="mailto:hello@toposlabs.com">hello@toposlabs.com</a>.
+      We read everything that commutes.
     </p>
 
     <h3 class="refs-head">References</h3>
     <ol class="refs">
-      <li>The Laboratory, <a href="mailto:hello@toposlabs.com">hello@toposlabs.com</a>, personal communication, 2026&mdash;.</li>
       <li>Topos Labs, <em>Source code and other local data</em>, <a href="https://github.com/wamlat" rel="noopener">github.com/wamlat</a>.</li>
-      <li>S. Mac&nbsp;Lane and I. Moerdijk, <em>Sheaves in Geometry and Logic: A First Introduction to Topos Theory</em>, Springer, 1992.</li>
-      <li>M. Artin, A. Grothendieck, and J.-L. Verdier, <em>SGA&nbsp;4: Théorie des topos et cohomologie étale des schémas</em>, Springer Lecture Notes in Mathematics 269, 1972.</li>
+      <li>S. Mac&nbsp;Lane and I. Moerdijk, <em>Sheaves in Geometry and Logic</em>, Springer, 1992.</li>
+      <li>M. Artin, A. Grothendieck, and J.-L. Verdier, <em>SGA&nbsp;4</em>, Springer LNM 269, 1972.</li>
     </ol>
   </section>
 
   <footer class="colophon">
     <span class="qed" aria-label="end of proof">&#8718;</span>
-    <p>Typeset with STIX Two and KaTeX &middot; deployed as a global section over
-      <a href="https://toposlabs.com">toposlabs.com</a> &middot; &copy; 2026 Topos Labs</p>
+    <p>a global section over <a href="https://toposlabs.com">toposlabs.com</a> &middot; &copy; 2026 Topos Labs</p>
   </footer>
 
 </main>

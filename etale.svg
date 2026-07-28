@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <g fill="none" stroke="#8D897E" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 40 46 H 82"/>
+    <path d="M 76 41 L 83 46 L 76 51"/>
+    <path d="M 170 80 V 108"/>
+    <path d="M 165 102 L 170 110 L 175 102"/>
+    <path d="M 34 150 h 42 M 34 150 v 42 M 76 150 v 42 M 34 192 h 42"/>
+    <path d="M 42 158 h 9 M 51 158 v 9"/>
+    <path d="M 150 210 c 18 -22 36 14 54 -5 c 12 -12 26 -2 36 5"/>
+  </g>
+  <g fill="#8D897E" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="15">
+    <text x="22" y="51">A</text>
+    <text x="90" y="51">B</text>
+    <text x="58" y="36">f</text>
+    <text x="152" y="70">F(U)</text>
+    <text x="180" y="98">&#961;</text>
+    <text x="152" y="130">F(V)</text>
+    <text x="243" y="66" font-size="26">&#937;</text>
+    <text x="218" y="165">U &#8745; V</text>
+    <text x="40" y="264">Sh(C, J)</text>
+    <text x="240" y="272">&#8707;!</text>
+  </g>
+</svg>

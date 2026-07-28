@@ -58,6 +58,19 @@
       }
     }
 
+    // ——— étale layer: reveal marginalia near the cursor ———
+    var etale = document.getElementById("etale");
+    if (etale && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduceMotion) {
+      document.addEventListener("pointermove", function (e) {
+        etale.style.setProperty("--mx", e.clientX + "px");
+        etale.style.setProperty("--my", e.clientY + "px");
+        etale.classList.add("on");
+      }, { passive: true });
+      document.documentElement.addEventListener("pointerleave", function () {
+        etale.classList.remove("on");
+      });
+    }
+
     // ——— Figure 2: glue / unglue ———
     var btn = document.getElementById("glue-btn");
     var svg = document.getElementById("glue-svg");

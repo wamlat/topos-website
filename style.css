@@ -69,17 +69,78 @@ a:hover { color: var(--red); }
 /* ———— page column ———— */
 
 .paper {
+  position: relative;
+  z-index: 1;
   max-width: var(--measure);
   margin: 0 auto;
   padding: 3rem 1.5rem 4rem;
 }
 
+/* ———— étale layer: marginalia revealed in a neighborhood of the cursor ———— */
+
+#etale {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("etale.svg");
+  background-size: 300px 300px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  -webkit-mask-image: radial-gradient(circle 190px at var(--mx, -500px) var(--my, -500px), rgba(0,0,0,0.95) 30%, transparent 72%);
+          mask-image: radial-gradient(circle 190px at var(--mx, -500px) var(--my, -500px), rgba(0,0,0,0.95) 30%, transparent 72%);
+}
+#etale.on { opacity: 0.6; }
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  #etale { display: none; }
+}
+
 /* ———— title block ———— */
 
 .titleblock {
+  position: relative;
   text-align: center;
   margin: 2.5rem 0 3rem;
 }
+
+/* an open cover of the title (open sets have dashed boundaries) */
+
+.cover {
+  position: absolute;
+  inset: -3rem -14vw;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.o {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(45, 89, 165, 0.32);
+  background: radial-gradient(closest-side, rgba(45, 89, 165, 0.07), transparent 78%);
+}
+
+.o1 { width: 52%; height: 74%; left: -2%; top: 2%; }
+.o2 {
+  width: 56%; height: 80%; right: -3%; top: 14%;
+  border-color: rgba(190, 61, 46, 0.3);
+  background: radial-gradient(closest-side, rgba(190, 61, 46, 0.06), transparent 78%);
+}
+.o3 {
+  width: 34%; height: 46%; left: 34%; bottom: -6%;
+  border-color: rgba(141, 137, 126, 0.4);
+  background: radial-gradient(closest-side, rgba(141, 137, 126, 0.07), transparent 78%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .o1 { animation: drift1 17s ease-in-out infinite alternate; }
+  .o2 { animation: drift2 21s ease-in-out infinite alternate; }
+  .o3 { animation: drift3 14s ease-in-out infinite alternate; }
+}
+
+@keyframes drift1 { to { transform: translate(26px, 12px) scale(1.05); } }
+@keyframes drift2 { to { transform: translate(-30px, -10px) scale(1.06); } }
+@keyframes drift3 { to { transform: translate(14px, -16px) scale(0.95); } }
 
 .preprint-note {
   font-family: var(--mono);
@@ -379,6 +440,17 @@ figcaption strong { font-weight: 700; }
 /* glued-state toggling */
 #fig2 .glued-only { opacity: 0; pointer-events: none; }
 #glue-svg.glued .glued-only { opacity: 1; }
+
+/* the global section draws itself when glued */
+@media (prefers-reduced-motion: no-preference) {
+  #glue-svg.glued #s12 {
+    opacity: 1;
+    transition: none;
+    stroke-dasharray: 520;
+    stroke-dashoffset: 520;
+    animation: draw 0.9s ease-out forwards;
+  }
+}
 #glue-svg.glued #s1, #glue-svg.glued #s2,
 #glue-svg.glued #u1, #glue-svg.glued #u2,
 #glue-svg.glued #s1lab, #glue-svg.glued #s2lab,
