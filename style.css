@@ -38,21 +38,7 @@ button:focus-visible,a:focus-visible{outline:1px dotted var(--paper);outline-off
 .topbar{position:absolute;left:3%;right:3%;top:3.2%;display:flex;align-items:center;height:48px}
 .brand{display:block;pointer-events:auto;color:var(--paper);text-decoration:none;padding:12px 0;transform:rotate(-.3deg)}
 .brand span{display:block;font-size:28px;line-height:1.2;font-weight:300;letter-spacing:.34em;transform:scaleX(.86);transform-origin:left;opacity:.81;text-shadow:-.35px .3px rgba(var(--ink),.16);filter:blur(.17px)}
-.contact-sheet{position:absolute;left:3%;bottom:11%;display:flex;gap:4px;pointer-events:auto;transform:rotate(-.7deg);isolation:isolate}
-.contact-sheet::before{content:"";position:absolute;left:-8px;right:-8px;top:-6px;bottom:-7px;background:url("/assets/grain.webp") center/240px;opacity:.16;z-index:-1;mask-image:url("/assets/ink-loss.png");mask-size:160px}
-.contact-frame{position:relative;width:62px;height:48px;padding:4px 0;border:0;background:transparent}
-.contact-frame:nth-child(2){transform:translateY(2px)}.contact-frame:nth-child(3){transform:translateY(-1px)}
-.contact-frame img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.2);opacity:.39;mask-image:url("/assets/ink-loss.png");mask-size:270px;transition:opacity .2s}
-.contact-frame:hover img,.contact-frame[aria-current="step"] img{opacity:.77}
-.frame-selection{position:absolute;left:12px;right:12px;bottom:0;height:1px;background:var(--paper);mask-image:url("/assets/ink-loss.png");mask-size:70px;opacity:0;transform:scaleX(.2)}
-.contact-frame[aria-current="step"] .frame-selection{opacity:.58;transform:scaleX(1)}
 .instrument-bar{position:absolute;bottom:2.5%;left:calc(3% - 9px);right:3%;display:flex;align-items:center;justify-content:space-between}
-.grade-control{display:flex;gap:1px;pointer-events:auto}
-.grade-chip{position:relative;display:grid;place-items:center;width:44px;height:44px;padding:0;background:transparent;border:0}
-.grade-chip i{display:block;width:13px;height:8px;background:#a3a59a;transform:rotate(-5deg);opacity:.66}
-.grade-chip[data-swatch="iron"] i{background:#a99575}.grade-chip[data-swatch="selenium"] i{background:#8da7a4}
-.grade-chip::after{content:"";position:absolute;left:17px;right:17px;bottom:7px;border-bottom:1px solid currentColor;opacity:0}
-.grade-chip[aria-pressed="true"] i,.grade-chip:hover i{opacity:1}.grade-chip[aria-pressed="true"]::after{opacity:.75}
 .descend{position:absolute;left:50%;transform:translateX(-50%);width:48px;height:44px;padding:0;background:transparent;border:0;display:grid;place-items:center;pointer-events:auto}
 .descend img{width:14px;height:14px;object-fit:contain;opacity:.8}.descend:hover img{opacity:1}.descend:active{transform:translate(-50%,1px)}
 .motion-switch{display:grid;place-items:center;pointer-events:auto;width:44px;height:44px;padding:0;background:transparent;border:0}
@@ -68,14 +54,13 @@ button:focus-visible,a:focus-visible{outline:1px dotted var(--paper);outline-off
 .error-artifact h1{font:300 27px "IBM Plex Mono",monospace;letter-spacing:.31em;mask-image:url("/assets/ink-loss.png");mask-size:215px}
 .error-artifact a,.error-artifact button{color:inherit;font:300 12px "IBM Plex Mono",monospace;background:transparent;border:0;border-bottom:1px dotted var(--silver);padding:12px;text-decoration:none}
 @keyframes print-registration{0%,70%,100%{transform:translate(0,0)}71%{transform:translate(-2px,1px)}92%{transform:translate(1px,-1px)}}
-@media(min-width:1800px){.brand span{font-size:32px}.contact-frame{width:70px;height:54px}}
+@media(min-width:1800px){.brand span{font-size:32px}}
 @media(max-width:700px){
  .topbar{left:6%;top:2.5%}.brand span{font-size:24px;letter-spacing:.29em}
  .topos .scroll-scrub__media{mask-image:radial-gradient(ellipse 143% 75% at 50% 50%,black 34%,rgba(0,0,0,.94) 65%,transparent 99%)}
  .iris-notations{width:113vw;height:113vw;top:49%;mask-image:radial-gradient(ellipse at 50% 50%,transparent 0%,transparent 18%,rgba(0,0,0,.85) 39%,black 60%,transparent 92%)}
  .iris-notation img{mask-size:370px}
  [data-notation="0"] .notation-category,[data-notation="1"] .notation-topology,[data-notation="2"] .notation-geometry,[data-notation="3"] .notation-sheaves{opacity:calc(.30 + var(--trace-reveal,.5)*.17)}
- .contact-sheet{left:6%;bottom:10%;gap:3px}.contact-frame{width:45px;height:44px}
  .instrument-bar{left:calc(6% - 9px);right:5%;bottom:max(15px,env(safe-area-inset-bottom))}
  .emulsion{opacity:.15;background-size:430px}
 }

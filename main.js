@@ -32,10 +32,6 @@
     var nextChapter = targetProgress >= .67 ? 2 : targetProgress >= .22 ? 1 : 0;
     if (nextChapter !== chapter) {
       chapter = nextChapter;
-      document.querySelectorAll(".contact-frame").forEach(function (button, index) {
-        if (index === chapter) button.setAttribute("aria-current", "step");
-        else button.removeAttribute("aria-current");
-      });
     }
   }
 
@@ -79,12 +75,6 @@
     video.load();
   }
 
-  document.querySelectorAll(".contact-frame").forEach(function (button, index) {
-    button.addEventListener("click", function () {
-      chapter = index;
-      jump(chapterPositions[index]);
-    });
-  });
   document.querySelector(".descend")?.addEventListener("click", function () {
     jump(chapter === 2 ? 0 : chapterPositions[chapter + 1]);
   });
@@ -96,9 +86,6 @@
     this.setAttribute("title", paused ? "Resume photographic motion" : "Hold photographic motion");
     var icon = this.querySelector("img");
     if (icon) icon.src = paused ? "assets/identity/play.png" : "assets/identity/pause.png";
-  });
-  document.querySelectorAll(".grade-chip").forEach(function (button) {
-    button.addEventListener("click", function () { setGrade(button.dataset.swatch); });
   });
   window.addEventListener("scroll", updateProgress, { passive: true });
   window.addEventListener("resize", updateProgress);
