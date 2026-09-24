@@ -1,33 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Topos Labs</title>
-<meta name="description" content="Topos Labs — Wir müssen wissen, wir werden wissen.">
-<meta property="og:title" content="Topos Labs">
-<meta property="og:description" content="Wir müssen wissen — wir werden wissen.">
-<meta property="og:url" content="https://toposlab.com">
-<meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FCFBF7'/%3E%3Ctext x='16' y='24' font-size='24' text-anchor='middle' font-family='Georgia,serif' fill='%231C1B1A'%3E%CE%A9%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topos</title>
+  <meta name="description" content="Topos. Spaces, maps and local structure.">
+  <meta name="theme-color" content="#090b08">
+  <meta property="og:title" content="Topos">
+  <meta property="og:description" content="Spaces, maps and local structure.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://toposlab.com">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main class="topos" data-grade="silver" data-paused="false" data-cut="0" data-notation="0" id="top">
+    <section class="scroll-scrub" style="--ss-accent:#e0e2dc;--ss-bg:#111210;--ss-ink:#e0e2dc;--ss-muted:#95988f">
+      <div class="scroll-scrub__stage">
+        <div class="scroll-scrub__media" aria-hidden="true">
+          <figure class="scroll-scrub__layer" data-scroll-scrub-layer>
+            <picture>
+              <source media="(hover: none) and (pointer: coarse), (max-width: 860px)" srcset="assets/world/scene-01-mobile-poster.png">
+              <img class="scroll-scrub__poster" src="assets/world/scene-01-poster.png" alt="" decoding="async" fetchpriority="high">
+            </picture>
+            <video class="scroll-scrub__video" muted playsinline preload="metadata" aria-hidden="true"></video>
+          </figure>
+        </div>
+        <div class="scroll-scrub__progress" aria-hidden="true"><span></span></div>
+      </div>
+      <div class="scroll-scrub__story">
+        <article class="scroll-scrub__chapter" style="min-height:500dvh">
+          <div class="scroll-scrub__chapter-pin">
+            <div class="scroll-scrub__copy">
+              <h1 class="scroll-scrub__title">Topos</h1>
+              <p class="scroll-scrub__body">A mathematical investigation.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
 
-<div id="etale" aria-hidden="true"></div>
+    <div class="proof-archive" aria-hidden="true">
+      <div class="iris-notations">
+        <figure class="iris-notation notation-category"><img src="assets/manuscripts/category.webp" alt="" decoding="async"></figure>
+        <figure class="iris-notation notation-topology"><img src="assets/manuscripts/topology.webp" alt="" decoding="async"></figure>
+        <figure class="iris-notation notation-geometry"><img src="assets/manuscripts/geometry.webp" alt="" decoding="async"></figure>
+        <figure class="iris-notation notation-sheaves"><img src="assets/manuscripts/sheaves.webp" alt="" decoding="async"></figure>
+      </div>
+    </div>
 
-<main class="hero">
-  <div class="titleblock">
-    <h1 class="title">Topos Labs</h1>
-    <p class="epigraph">&ldquo;Wir m&uuml;ssen wissen &mdash; wir werden wissen&rdquo;<span class="epigraph-attr"> &mdash; David Hilbert</span></p>
-  </div>
-
-  <canvas id="hopf" aria-label="Animated Hopf fibration: nested tori of linked circles, breathing and rotating"></canvas>
-</main>
-
-<script defer src="main.js"></script>
+    <div class="film-grade" aria-hidden="true"></div>
+    <div class="artifact-ui">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Topos, return to beginning"><span class="print-ink">TOPOS</span></a>
+      </header>
+      <nav class="contact-sheet" aria-label="Film chapters">
+        <button class="contact-frame" aria-label="Eye" aria-current="step" title="Eye" data-position="0"><img src="assets/contact/eye.webp" alt="" role="presentation"><span class="frame-selection" aria-hidden="true"></span></button>
+        <button class="contact-frame" aria-label="Iris" title="Iris" data-position=".48"><img src="assets/contact/iris.webp" alt="" role="presentation"><span class="frame-selection" aria-hidden="true"></span></button>
+        <button class="contact-frame" aria-label="Pupil" title="Pupil" data-position="1"><img src="assets/contact/pupil.webp" alt="" role="presentation"><span class="frame-selection" aria-hidden="true"></span></button>
+      </nav>
+      <footer class="instrument-bar">
+        <div class="grade-control" role="group" aria-label="Photographic color scheme">
+          <button class="grade-chip" data-swatch="silver" aria-label="Silver monochrome" aria-pressed="true" title="Silver monochrome"><i class="print-ink"></i></button>
+          <button class="grade-chip" data-swatch="iron" aria-label="Oxidized photographic print" aria-pressed="false" title="Oxidized photographic print"><i class="print-ink"></i></button>
+          <button class="grade-chip" data-swatch="selenium" aria-label="Cold selenium print" aria-pressed="false" title="Cold selenium print"><i class="print-ink"></i></button>
+        </div>
+        <button class="descend" aria-label="Next film chapter"><img class="print-ink" src="assets/identity/arrow.png" alt="" role="presentation"></button>
+        <button class="motion-switch" aria-label="Hold photographic motion" aria-pressed="false" title="Hold photographic motion"><img class="print-ink" src="assets/identity/pause.png" alt="" role="presentation"></button>
+      </footer>
+    </div>
+    <div class="emulsion" aria-hidden="true"></div>
+    <section class="sr-only" aria-label="Mathematical investigation">
+      <h2>Spaces, maps and local structure</h2>
+      <p>The eye is the central moving image. Sparse handwritten mathematical fragments appear directly over the iris, drawing from category theory, topology and geometry. The hold control pauses the ambient motion, scrolling advances the film, and three photographic color grades are available.</p>
+    </section>
+  </main>
+  <script src="main.js" defer></script>
 </body>
 </html>

@@ -1,8 +1,12 @@
 # toposlab.com
 
-Landing page for Topos Labs, styled as a math preprint. Static site — no build step.
+The Topos visual site: a scroll-driven eye film with handwritten category theory,
+topology, and geometry exposed as photographic traces. It is a static GitHub Pages
+site with no build step.
 
 - `index.html` / `style.css` / `main.js` — the whole site
+- `assets/world/` — the desktop and mobile eye film
+- `assets/manuscripts/` — the four photographed notation plates
 - `.github/workflows/deploy.yml` — deploys to GitHub Pages on every push to `main`
 - `CNAME` — custom domain (`toposlab.com`)
 
