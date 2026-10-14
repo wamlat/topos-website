@@ -4,11 +4,13 @@ html,body{margin:0;background:var(--ground);color:var(--paper);font-family:"IBM 
 html{overscroll-behavior-x:none}body{overflow-x:hidden}*{box-sizing:border-box}
 button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{font:inherit;cursor:pointer}
 button:focus-visible,a:focus-visible{outline:1px dotted var(--paper);outline-offset:5px}button:active{transform:translateY(1px)}
-.topos{position:relative;--journey:0;--phase:0;--ink:208,207,192;background:var(--ground);isolation:isolate}
-.topos[data-grade="iron"]{--paper:#c8bd9f;--silver:#a99575;--ground:#131008;--ink:200,189,159}
-.topos[data-grade="selenium"]{--paper:#bdcbca;--silver:#8da7a4;--ground:#07100e;--ink:189,203,202}
+.topos{position:relative;--journey:0;--phase:0;--ink:208,207,192;--ground-rgb:9,11,8;background:var(--ground);isolation:isolate}
+.topos[data-grade="iron"]{--paper:#c8bd9f;--silver:#a99575;--ground:#131008;--ground-rgb:19,16,8;--ink:200,189,159}
+.topos[data-grade="selenium"]{--paper:#bdcbca;--silver:#8da7a4;--ground:#07100e;--ground-rgb:7,16,14;--ink:189,203,202}
 .topos .scroll-scrub,.topos .scroll-scrub__stage{background:var(--ground)}
-.topos .scroll-scrub__media{inset:-.5%;width:101%;height:101%;filter:grayscale(1) contrast(1.19) brightness(.88);mask-image:radial-gradient(ellipse 79% 86% at 50% 50%,black 34%,rgba(0,0,0,.94) 69%,transparent 100%)}
+.topos .scroll-scrub__media{inset:-.5%;width:101%;height:101%}
+.topos .scroll-scrub__layer{filter:grayscale(1) contrast(1.19) brightness(.88)}
+.topos .scroll-scrub__media::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 79% 86% at 50% 50%,transparent 34%,rgba(var(--ground-rgb),.06) 69%,rgba(var(--ground-rgb),1) 100%)}
 .topos .scroll-scrub__poster,.topos .scroll-scrub__video{object-fit:cover}
 .topos .scroll-scrub__route,.topos .scroll-scrub__progress{display:none}
 .topos .scroll-scrub__story{padding-bottom:100dvh}
@@ -20,8 +22,8 @@ button:focus-visible,a:focus-visible{outline:1px dotted var(--paper);outline-off
 .angel-tissue{position:absolute;inset:-19%;background-repeat:no-repeat;pointer-events:none;mix-blend-mode:soft-light;transform:translate3d(var(--flow-x,0px),var(--flow-y,0px),0) scale(1.13);filter:grayscale(1) contrast(1.4) brightness(.82) blur(4px);-webkit-mask-image:radial-gradient(ellipse 46% 53% at 50% 50%,rgba(0,0,0,.06) 0%,black 28%,rgba(0,0,0,.72) 64%,transparent 100%);mask-image:radial-gradient(ellipse 46% 53% at 50% 50%,rgba(0,0,0,.06) 0%,black 28%,rgba(0,0,0,.72) 64%,transparent 100%)}
 .angel-tissue--feather{background-image:url("assets/angels/seraph-wing-v1.webp");background-size:138% auto;background-position:50% 49%;opacity:var(--tissue-feather,0)}
 .angel-tissue--wheel{background-image:url("assets/angels/ophanim-wheel-v1.webp");background-size:126% auto;background-position:52% 52%;opacity:var(--tissue-wheel,0);transform:translate3d(var(--flow-x2,0px),var(--flow-y2,0px),0) scale(1.04);filter:grayscale(1) contrast(1.3) brightness(.7) blur(8px)}
-.angel-diffuse-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:calc(var(--field-opacity) * .85);mix-blend-mode:screen;filter:grayscale(1) contrast(1.18) brightness(.95) blur(4px);-webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 49%,black 4%,black 49%,rgba(0,0,0,.7) 72%,transparent 100%);mask-image:radial-gradient(ellipse 80% 90% at 50% 49%,black 4%,black 49%,rgba(0,0,0,.7) 72%,transparent 100%)}
-.angel-field-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:var(--field-opacity);mix-blend-mode:normal;filter:grayscale(1) contrast(1.18) brightness(.94) blur(.35px);-webkit-mask-image:radial-gradient(ellipse 79% 91% at 50% 49%,black 0%,black 47%,rgba(0,0,0,.84) 70%,transparent 100%);mask-image:radial-gradient(ellipse 79% 91% at 50% 49%,black 0%,black 47%,rgba(0,0,0,.84) 70%,transparent 100%)}
+.angel-diffuse-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:calc(var(--field-opacity) * .62);mix-blend-mode:normal;-webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 49%,black 4%,black 49%,rgba(0,0,0,.7) 72%,transparent 100%);mask-image:radial-gradient(ellipse 80% 90% at 50% 49%,black 4%,black 49%,rgba(0,0,0,.7) 72%,transparent 100%)}
+.angel-field-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:var(--field-opacity);mix-blend-mode:normal;-webkit-mask-image:radial-gradient(ellipse 79% 91% at 50% 49%,black 0%,black 47%,rgba(0,0,0,.84) 70%,transparent 100%);mask-image:radial-gradient(ellipse 79% 91% at 50% 49%,black 0%,black 47%,rgba(0,0,0,.84) 70%,transparent 100%)}
 .angel-pressure{position:absolute;inset:0;background:radial-gradient(ellipse 17% 22% at var(--pressure-x,50%) var(--pressure-y,50%),rgba(213,216,204,.22),rgba(213,216,204,.06) 38%,transparent 80%);mix-blend-mode:screen;opacity:var(--pressure,0);filter:blur(18px);pointer-events:none}
 .angel-stage::after{content:"";position:absolute;inset:0;background:url("assets/grain.webp") center/440px;mix-blend-mode:soft-light;opacity:.12;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 74% 84% at 50% 49%,black 23%,transparent 100%);mask-image:radial-gradient(ellipse 74% 84% at 50% 49%,black 23%,transparent 100%)}
 .angel-proof{position:absolute;inset:-12%;background:url("assets/manuscripts/sheaves.webp") center/cover no-repeat;filter:grayscale(1) invert(1) contrast(1.8) brightness(.66) blur(1.2px);mix-blend-mode:screen;opacity:var(--proof);-webkit-mask-image:radial-gradient(ellipse 49% 58% at 50% 50%,transparent 0%,transparent 43%,rgba(0,0,0,.22) 70%,transparent 100%);mask-image:radial-gradient(ellipse 49% 58% at 50% 50%,transparent 0%,transparent 43%,rgba(0,0,0,.22) 70%,transparent 100%)}
@@ -68,7 +70,7 @@ button:focus-visible,a:focus-visible{outline:1px dotted var(--paper);outline-off
 @media(min-width:1800px){.brand span{font-size:32px}}
 @media(max-width:700px){
  .topbar{left:6%;top:2.5%}.brand span{font-size:24px;letter-spacing:.29em}
- .topos .scroll-scrub__media{mask-image:radial-gradient(ellipse 143% 75% at 50% 50%,black 34%,rgba(0,0,0,.94) 65%,transparent 99%)}
+ .topos .scroll-scrub__media::after{background:radial-gradient(ellipse 143% 75% at 50% 50%,transparent 34%,rgba(var(--ground-rgb),.06) 65%,rgba(var(--ground-rgb),1) 99%)}
  .iris-notations{width:113vw;height:113vw;top:49%;mask-image:radial-gradient(ellipse at 50% 50%,transparent 0%,transparent 18%,rgba(0,0,0,.85) 39%,black 60%,transparent 92%)}
  .iris-notation img{mask-size:370px}
  [data-notation="0"] .notation-category,[data-notation="1"] .notation-topology,[data-notation="2"] .notation-geometry,[data-notation="3"] .notation-sheaves{opacity:calc(.30 + var(--trace-reveal,.5)*.17)}

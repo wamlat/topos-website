@@ -9,7 +9,6 @@ site with no build step.
 - `assets/world/` — the desktop and mobile eye film
 - `assets/manuscripts/` — the four photographed notation plates
 - `assets/angels/` — lossless WebP fragments and the soft background tissue
-- `assets/swarm/` — four short moving textures within the field
 - `.github/workflows/deploy.yml` — deploys to GitHub Pages on every push to `main`
 - `CNAME` — custom domain (`toposlab.com`)
 

@@ -15,6 +15,7 @@
   var notationClock = 0;
   var lastTime = performance.now();
   var lastSeekAt = -Infinity;
+  var lastTracePaint = -Infinity;
   var lastJourney = null;
   var lastTraceReveal = null;
   var raf = 0;
@@ -40,7 +41,7 @@
 
   function seekFilm(now) {
     if (!video || reduced || !Number.isFinite(video.duration)) return;
-    if (video.seeking || now - lastSeekAt < 85) return;
+    if (video.seeking || now - lastSeekAt < 125) return;
     var next = renderedProgress * Math.max(0.1, video.duration - 0.04);
     if (Math.abs(video.currentTime - next) > 0.035) {
       try { video.currentTime = next; lastSeekAt = now; } catch (_) {}
@@ -57,7 +58,8 @@
       proofArchive.style.setProperty("--journey", journey);
       lastJourney = journey;
     }
-    if (!paused && !reduced) {
+    if (!paused && !reduced && now - lastTracePaint >= 42) {
+      lastTracePaint = now;
       var phase = (notationClock % 15) / 15;
       var angle = phase * Math.PI * 2;
       var reveal = .56 + .22 * Math.sin(angle + .5) + .045 * Math.sin(2 * angle - .7);

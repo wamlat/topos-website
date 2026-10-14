@@ -45,10 +45,6 @@
   var featherIndices = [0, 5, 6, 7, 9, 10, 11, 12];
   var sprites = [];
   var particles = [];
-  var videos = [];
-  var videoTextures = [];
-  var videoTextureContexts = [];
-  var videoMask = null;
   var fieldLoaded = false;
   var width = window.innerWidth;
   var height = window.innerHeight;
@@ -113,8 +109,8 @@
     brush.scale(sprite.width / 2, sprite.height / 2);
     var edge = brush.createRadialGradient(0, 0, .12, 0, 0, 1);
     edge.addColorStop(0, "rgba(0,0,0,1)");
-    edge.addColorStop(.47, "rgba(0,0,0,.94)");
-    edge.addColorStop(.72, "rgba(0,0,0,.44)");
+    edge.addColorStop(.36, "rgba(0,0,0,.92)");
+    edge.addColorStop(.72, "rgba(0,0,0,.28)");
     edge.addColorStop(1, "rgba(0,0,0,0)");
     brush.fillStyle = edge;
     brush.fillRect(-1, -1, 2, 2);
@@ -123,45 +119,10 @@
     return { image: sprite, kind: crop.kind, aspect: sprite.width / sprite.height, index: index };
   }
 
-  function makeVideoMask() {
-    var mask = document.createElement("canvas");
-    mask.width = mask.height = 96;
-    var brush = mask.getContext("2d");
-    var fade = brush.createRadialGradient(48, 48, 4, 48, 48, 47);
-    fade.addColorStop(0, "rgba(0,0,0,1)");
-    fade.addColorStop(.52, "rgba(0,0,0,.7)");
-    fade.addColorStop(1, "rgba(0,0,0,0)");
-    brush.fillStyle = fade;
-    brush.fillRect(0, 0, 96, 96);
-    return mask;
-  }
-
-  function buildVideos() {
-    videoMask = makeVideoMask();
-    videos = [0, 1, 2, 3].map(function (index) {
-      var video = document.createElement("video");
-      video.src = "assets/swarm/loop-" + index + ".mp4";
-      video.muted = true;
-      video.loop = true;
-      video.autoplay = true;
-      video.playsInline = true;
-      video.preload = "auto";
-      video.addEventListener("loadedmetadata", function () {
-        try { video.currentTime = (index * .71) % Math.max(1, video.duration); } catch (_) {}
-        video.play().catch(function () {});
-      }, { once: true });
-      var texture = document.createElement("canvas");
-      texture.width = texture.height = 96;
-      videoTextures[index] = texture;
-      videoTextureContexts[index] = texture.getContext("2d", { alpha: true });
-      return video;
-    });
-    updateVideoPlayback();
-  }
-
   function buildParticles() {
     particles = [];
-    var count = mobile ? 122 : 220;
+    var count = mobile ? 108 : 190;
+    var viewportScale = mobile ? 1 : clamp(width / 900, 1, 1.45);
     var centerX = width * (mobile ? .59 : .5);
     var centerY = height * .51;
     for (var index = 0; index < count; index++) {
@@ -172,7 +133,7 @@
       var scale = weight < .5 ? (mobile ? 6 : 8) + random(index + 31) * (mobile ? 10 : 14)
         : weight < .92 ? (mobile ? 17 : 21) + random(index + 37) * (mobile ? 20 : 28)
         : (mobile ? 36 : 45) + random(index + 41) * (mobile ? 17 : 26);
-      scale *= 1.14;
+      scale *= (weight < .5 ? 1.22 : 1.32) * viewportScale;
       if (kind === "eye") scale = Math.max(scale, mobile ? 24 : 30);
       var angle = random(index + 47) * Math.PI * 2;
       var radius = kind === "eye" ? .36 + random(index + 53) * .55
@@ -192,9 +153,8 @@
         ink: .85,
         flow: 0,
         depth: .52 + random(index + 73) * .48,
-        opacity: kind === "eye" ? .21 : weight < .5 ? .06 : .15,
-        sprite: sprites[spriteIndex],
-        videoIndex: kind === "eye" && index % 3 === 0 ? index % 4 : -1
+        opacity: kind === "eye" ? .27 : kind === "arc" ? (weight < .5 ? .075 : .16) : weight < .5 ? .12 : .3,
+        sprite: sprites[spriteIndex]
       });
     }
     stage.dataset.fragments = String(particles.length);
@@ -204,7 +164,7 @@
     var previousWidth = width;
     var previousHeight = height;
     var nextMobile = window.innerWidth < 700;
-    var nextRatio = Math.min(nextMobile ? 1.25 : 1.6, window.devicePixelRatio || 1);
+    var nextRatio = Math.min(1, window.devicePixelRatio || 1);
     if (sizedOnce && previousWidth === window.innerWidth && previousHeight === window.innerHeight && ratio === nextRatio) {
       updateScroll();
       return;
@@ -274,11 +234,13 @@
   function currentAt(x, y, currents, result) {
     var vx = Math.sin(clock * .17 + y * .003) * 3;
     var vy = Math.cos(clock * .12 + x * .002) * 3;
+    var cover = 0;
     for (var index = 0; index < currents.length; index++) {
       var current = currents[index];
       var dx = x - current.x;
       var dy = y - current.y;
       var reach = Math.exp(-(dx * dx + dy * dy) / (current.radius * current.radius));
+      cover = Math.max(cover, reach);
       vx -= dy * current.spin * reach;
       vy += dx * current.spin * reach;
     }
@@ -287,13 +249,14 @@
     if (speed > limit) { vx *= limit / speed; vy *= limit / speed; }
     result.x = vx;
     result.y = vy;
+    result.cover = cover;
     return result;
   }
 
   function simulate(dt, phase, now) {
     var centerX = width * (mobile ? .59 : .5);
     var centerY = height * .51;
-    var search = (.46 + .54 * smooth(.015, .23, phase)) * (1 - smooth(.62, .75, phase));
+    var search = (.72 + .28 * smooth(.015, .23, phase)) * (1 - smooth(.62, .75, phase));
     var registration = smooth(.49, .75, phase) * (1 - smooth(.86, .98, phase));
     var failure = smooth(.73, .84, phase) * (1 - smooth(.87, .97, phase));
     var fadeOut = smooth(.88, 1, phase);
@@ -303,8 +266,8 @@
     setVariable(stage, stageVariables, "--proof", (registration * .13 * (1 - failure)).toFixed(3));
     setVariable(stage, stageVariables, "--burn", (failure * .15).toFixed(3));
     setVariable(stage, stageVariables, "--field-opacity", (.28 + density * .72).toFixed(3));
-    setVariable(stage, stageVariables, "--tissue-feather", (density * .22).toFixed(3));
-    setVariable(stage, stageVariables, "--tissue-wheel", (density * .09).toFixed(3));
+    setVariable(stage, stageVariables, "--tissue-feather", (density * .5).toFixed(3));
+    setVariable(stage, stageVariables, "--tissue-wheel", (density * .2).toFixed(3));
     if (!particles.length) return { search: search, registration: registration, failure: failure, fadeOut: fadeOut, density: density };
 
     var snapshot = particles.map(function (part) { return { x: part.x, y: part.y, vx: part.vx, vy: part.vy }; });
@@ -393,7 +356,8 @@
       // congregation without turning it into outlined particles or connectors.
       var crowd = smooth(2, mobile ? 8 : 11, neighbors);
       var band = Math.sin(part.x * .012 + part.y * .004 - clock * .53);
-      var targetInk = .7 + crowd * .43 + band * .11;
+      var pocket = smooth(.32, .78, current.cover);
+      var targetInk = .68 + crowd * .34 + pocket * .32 + band * .11;
       part.ink += (targetInk - part.ink) * (1 - Math.exp(-dt * 1.4));
       if (pointer) {
         var pX = part.x - pointer.x;
@@ -452,22 +416,8 @@
     return { search: search, registration: registration, failure: failure, fadeOut: fadeOut, density: density };
   }
 
-  function updateVideoTextures() {
-    videos.forEach(function (video, index) {
-      if (video.readyState < 2 || !video.videoWidth) return;
-      var brush = videoTextureContexts[index];
-      brush.clearRect(0, 0, 96, 96);
-      var cropWidth = Math.min(video.videoWidth, video.videoHeight);
-      brush.drawImage(video, (video.videoWidth - cropWidth) / 2, (video.videoHeight - cropWidth) / 2, cropWidth, cropWidth, 0, 0, 96, 96);
-      brush.globalCompositeOperation = "destination-in";
-      brush.drawImage(videoMask, 0, 0);
-      brush.globalCompositeOperation = "source-over";
-    });
-  }
-
   function paint(state, paused, dt) {
     context.clearRect(0, 0, width, height);
-    if (state.density > .012) updateVideoTextures();
     context.globalCompositeOperation = "source-over";
     var centerX = width * (mobile ? .59 : .5);
     var centerY = height * .51;
@@ -490,11 +440,7 @@
       context.save();
       context.translate(part.x, part.y);
       context.rotate(part.angle);
-      if (part.videoIndex >= 0 && videoTextures[part.videoIndex]) {
-        context.globalAlpha = Math.min(.13, base * .55);
-        context.drawImage(videoTextures[part.videoIndex], -drawWidth * .42, -drawHeight * .42, drawWidth * .84, drawHeight * .84);
-      }
-      context.globalAlpha = clamp(base * .66, 0, .36);
+      context.globalAlpha = clamp(base * .88, 0, .5);
       context.drawImage(sprite.image, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
       if (sprite.kind === "feather" && part.size > (mobile ? 38 : 48) && index % 3 === 0) {
         context.globalAlpha = clamp(base * .07, 0, .04);
@@ -551,14 +497,6 @@
     paint(state, paused, dt);
   }
 
-  function updateVideoPlayback() {
-    var play = !reducedQuery.matches && document.visibilityState === "visible" && root.dataset.paused !== "true";
-    videos.forEach(function (video) {
-      if (play) video.play().catch(function () {});
-      else video.pause();
-    });
-  }
-
   window.addEventListener("pointermove", function (event) {
     var next = { x: event.clientX, y: event.clientY, at: performance.now() };
     if (pointer) {
@@ -579,18 +517,14 @@
   });
   window.addEventListener("scroll", updateScroll, { passive: true });
   window.addEventListener("resize", resize, { passive: true });
-  document.addEventListener("visibilitychange", updateVideoPlayback);
   reducedQuery.addEventListener("change", function () {
     clearHistory();
     if (!reducedQuery.matches) loadField();
-    updateVideoPlayback();
   });
-  new MutationObserver(updateVideoPlayback).observe(root, { attributes: true, attributeFilter: ["data-paused"] });
 
   function loadField() {
     if (fieldLoaded || reducedQuery.matches) return;
     fieldLoaded = true;
-    buildVideos();
     Promise.all(sourcePaths.map(loadImage)).then(function (images) {
       sprites = crops.map(function (crop, index) { return createSprite(images[crop.source], crop, index); });
       buildParticles();
