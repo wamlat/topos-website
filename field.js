@@ -3,6 +3,7 @@
 
   var root = document.querySelector(".topos");
   var stage = document.querySelector(".angel-stage");
+  var scrollStage = document.querySelector(".scroll-scrub__stage");
   var tissueFeather = document.querySelector(".angel-tissue--feather");
   var tissueWheel = document.querySelector(".angel-tissue--wheel");
   var canvas = document.querySelector(".angel-field-canvas");
@@ -47,7 +48,7 @@
   var particles = [];
   var fieldLoaded = false;
   var width = window.innerWidth;
-  var height = window.innerHeight;
+  var height = scrollStage && scrollStage.clientHeight || window.innerHeight;
   var mobile = width < 700;
   var ratio = 1;
   var sizedOnce = false;
@@ -163,15 +164,17 @@
   function resize() {
     var previousWidth = width;
     var previousHeight = height;
-    var nextMobile = window.innerWidth < 700;
+    var nextWidth = window.innerWidth;
+    var nextHeight = scrollStage && scrollStage.clientHeight || window.innerHeight;
+    var nextMobile = nextWidth < 700;
     var nextRatio = Math.min(1, window.devicePixelRatio || 1);
-    if (sizedOnce && previousWidth === window.innerWidth && previousHeight === window.innerHeight && ratio === nextRatio) {
+    if (sizedOnce && previousWidth === nextWidth && previousHeight === nextHeight && ratio === nextRatio) {
       updateScroll();
       return;
     }
     var previousMobile = mobile;
-    width = window.innerWidth;
-    height = window.innerHeight;
+    width = nextWidth;
+    height = nextHeight;
     sizedOnce = true;
     mobile = nextMobile;
     ratio = nextRatio;
@@ -211,7 +214,7 @@
   }
 
   function updateScroll() {
-    var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    var max = Math.max(1, document.documentElement.scrollHeight - (scrollStage && scrollStage.clientHeight || window.innerHeight));
     scrollPosition = clamp(window.scrollY / max, 0, 1);
   }
 

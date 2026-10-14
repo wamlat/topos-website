@@ -1,12 +1,12 @@
 # toposlab.com
 
-The Topos visual site: a scroll-driven eye film with handwritten category theory,
+The Topos visual site: a scroll-driven photographic eye sequence with handwritten category theory,
 topology, and geometry exposed as photographic traces. It is a static GitHub Pages
 site with no build step.
 
 - `index.html` / `style.css` / `main.js` — page structure, film, and scroll sequence
 - `field.js` — the responsive swarm field; nearby fragments influence one another
-- `assets/world/` — the desktop and mobile eye film
+- `assets/world/stills/` — seven compact desktop and mobile frames for the scroll-driven eye zoom
 - `assets/manuscripts/` — the four photographed notation plates
 - `assets/angels/` — lossless WebP fragments and the soft background tissue
 - `.github/workflows/deploy.yml` — deploys to GitHub Pages on every push to `main`
