@@ -2,6 +2,7 @@
   "use strict";
   var root = document.querySelector(".topos");
   if (!root) return;
+  var proofArchive = document.querySelector(".proof-archive") || root;
   var video = document.querySelector(".scroll-scrub__video");
   var poster = document.querySelector(".scroll-scrub__poster");
   var reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -13,6 +14,9 @@
   var renderedProgress = 0;
   var notationClock = 0;
   var lastTime = performance.now();
+  var lastSeekAt = -Infinity;
+  var lastJourney = null;
+  var lastTraceReveal = null;
   var raf = 0;
   var chapter = 0;
   var chapterPositions = [0, .48, 1];
@@ -28,18 +32,18 @@
   function updateProgress() {
     var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     targetProgress = Math.max(0, Math.min(1, window.scrollY / max));
-    root.style.setProperty("--journey", targetProgress.toFixed(5));
     var nextChapter = targetProgress >= .67 ? 2 : targetProgress >= .22 ? 1 : 0;
     if (nextChapter !== chapter) {
       chapter = nextChapter;
     }
   }
 
-  function seekFilm() {
+  function seekFilm(now) {
     if (!video || reduced || !Number.isFinite(video.duration)) return;
-    var next = targetProgress * Math.max(0.1, video.duration - 0.04);
-    if (Math.abs(video.currentTime - next) > 0.018) {
-      try { video.currentTime = next; } catch (_) {}
+    if (video.seeking || now - lastSeekAt < 85) return;
+    var next = renderedProgress * Math.max(0.1, video.duration - 0.04);
+    if (Math.abs(video.currentTime - next) > 0.035) {
+      try { video.currentTime = next; lastSeekAt = now; } catch (_) {}
     }
   }
 
@@ -47,16 +51,25 @@
     var dt = Math.min(.08, Math.max(0, (now - lastTime) / 1000));
     lastTime = now;
     if (!paused && !reduced && document.visibilityState === "visible") notationClock += dt;
-    renderedProgress += (targetProgress - renderedProgress) * Math.min(1, dt * 9);
-    root.style.setProperty("--journey", renderedProgress.toFixed(5));
+    renderedProgress += (targetProgress - renderedProgress) * (1 - Math.exp(-dt * 4.2));
+    var journey = renderedProgress.toFixed(5);
+    if (journey !== lastJourney) {
+      proofArchive.style.setProperty("--journey", journey);
+      lastJourney = journey;
+    }
     if (!paused && !reduced) {
       var phase = (notationClock % 15) / 15;
       var angle = phase * Math.PI * 2;
       var reveal = .56 + .22 * Math.sin(angle + .5) + .045 * Math.sin(2 * angle - .7);
-      root.style.setProperty("--trace-reveal", Math.max(0, Math.min(1, reveal)).toFixed(5));
-      root.dataset.notation = String(Math.floor((notationClock % 15) / 3.75));
+      var traceReveal = Math.max(0, Math.min(1, reveal)).toFixed(5);
+      if (traceReveal !== lastTraceReveal) {
+        proofArchive.style.setProperty("--trace-reveal", traceReveal);
+        lastTraceReveal = traceReveal;
+      }
+      var notation = String(Math.floor((notationClock % 15) / 3.75));
+      if (root.dataset.notation !== notation) root.dataset.notation = notation;
     }
-    seekFilm();
+    seekFilm(now);
     raf = window.requestAnimationFrame(paintMotion);
   }
 
@@ -70,7 +83,7 @@
     video.src = mobileQuery.matches ? "assets/world/scene-01-mobile.mp4" : "assets/world/scene-01.mp4";
     video.addEventListener("loadedmetadata", function () {
       duration = video.duration || duration;
-      seekFilm();
+      seekFilm(performance.now());
     }, { once: true });
     video.load();
   }
