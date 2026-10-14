@@ -261,9 +261,8 @@
     var failure = smooth(.73, .84, phase) * (1 - smooth(.87, .97, phase));
     var fadeOut = smooth(.88, 1, phase);
     var density = (1 - (1 - search) * (1 - registration) * (1 - failure)) * (1 - fadeOut);
-    setVariable(root, rootVariables, "--archive-opacity", clamp(.24 - .12 * search + .1 * registration - .28 * failure, .05, .28).toFixed(3));
+    setVariable(root, rootVariables, "--archive-opacity", clamp(.42 - .1 * search + .14 * registration - .28 * failure, .14, .55).toFixed(3));
     setVariable(stage, stageVariables, "--matte", (density * .2).toFixed(3));
-    setVariable(stage, stageVariables, "--proof", (registration * .13 * (1 - failure)).toFixed(3));
     setVariable(stage, stageVariables, "--burn", (failure * .15).toFixed(3));
     setVariable(stage, stageVariables, "--field-opacity", (.28 + density * .72).toFixed(3));
     setVariable(stage, stageVariables, "--tissue-feather", (density * .5).toFixed(3));

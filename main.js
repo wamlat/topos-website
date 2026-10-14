@@ -15,9 +15,7 @@
   var notationClock = 0;
   var lastTime = performance.now();
   var lastSeekAt = -Infinity;
-  var lastTracePaint = -Infinity;
   var lastJourney = null;
-  var lastTraceReveal = null;
   var raf = 0;
   var chapter = 0;
   var chapterPositions = [0, .48, 1];
@@ -58,16 +56,7 @@
       proofArchive.style.setProperty("--journey", journey);
       lastJourney = journey;
     }
-    if (!paused && !reduced && now - lastTracePaint >= 42) {
-      lastTracePaint = now;
-      var phase = (notationClock % 15) / 15;
-      var angle = phase * Math.PI * 2;
-      var reveal = .56 + .22 * Math.sin(angle + .5) + .045 * Math.sin(2 * angle - .7);
-      var traceReveal = Math.max(0, Math.min(1, reveal)).toFixed(5);
-      if (traceReveal !== lastTraceReveal) {
-        proofArchive.style.setProperty("--trace-reveal", traceReveal);
-        lastTraceReveal = traceReveal;
-      }
+    if (!paused && !reduced) {
       var notation = String(Math.floor((notationClock % 15) / 3.75));
       if (root.dataset.notation !== notation) root.dataset.notation = notation;
     }
