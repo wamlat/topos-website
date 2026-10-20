@@ -1,16 +1,23 @@
 # toposlab.com
 
-The Topos visual site: a scroll-driven photographic eye sequence with handwritten category theory,
-topology, and geometry exposed as photographic traces. It is a static GitHub Pages
-site with no build step.
+The static version of [toposlab.bio](https://toposlab.bio/), with the same branding,
+copy, layout, and cursor-reactive swarm. Plain HTML, CSS, and canvas JavaScript;
+no framework, package installation, or build step.
 
-- `index.html` / `style.css` / `main.js` — page structure, film, and scroll sequence
-- `field.js` — the responsive swarm field; nearby fragments influence one another
-- `assets/world/stills/` — seven compact desktop and mobile frames for the scroll-driven eye zoom
-- `assets/manuscripts/` — the four photographed notation plates
-- `assets/angels/` — lossless WebP fragments and the soft background tissue
-- `.github/workflows/deploy.yml` — deploys to GitHub Pages on every push to `main`
+Contact opens a direct email link. There is no backend, API, sign-in, upload page,
+or dataset browser.
+
+- `index.html` / `style.css` — landing page and shared layout
+- `main.js` — swarm animation, cursor interaction, and reduced-motion support
+- `brand/` / `fonts/` — self-hosted logos, fallback swarm drawing, and fonts
+- `contact/index.html` — static contact page
+- `404.html` — missing-page response
+- `.github/workflows/deploy.yml` — checks JavaScript syntax, stages only public files,
+  and deploys to GitHub Pages on every push to `main`
 - `CNAME` — custom domain (`toposlab.com`)
+
+To preview locally, run `python3 -m http.server 5191` from this directory and open
+`http://localhost:5191/`.
 
 ## DNS (Namecheap)
 

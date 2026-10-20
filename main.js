@@ -1,178 +1,218 @@
-(function () {
-  "use strict";
-  var root = document.querySelector(".topos");
-  if (!root) return;
-  var irisNotations = document.querySelector(".iris-notations");
-  var scrollStage = document.querySelector(".scroll-scrub__stage");
-  var media = document.querySelector(".scroll-scrub__media");
-  var frames = Array.from(document.querySelectorAll(".film-frame"));
-  var reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var reduced = reducedQuery.matches;
-  var mobileQuery = window.matchMedia("(hover: none) and (pointer: coarse), (max-width: 860px)");
-  var paused = false;
-  var targetProgress = 0;
-  var renderedProgress = 0;
-  var notationClock = 0;
-  var lastTime = performance.now();
-  var lastIrisTransform = "";
-  var chapter = 0;
-  var chapterPositions = [0, .48, 1];
-  var eyeKeys = [
-    [786, 426, 30], [782, 419, 39], [769, 403, 48], [763, 401, 62],
-    [762, 391, 88], [767, 383, 135], [760, 379, 219]
-  ];
-  var frameMetrics = [];
-  var measuredWidth = 0;
-  var measuredHeight = 0;
-  var measuredMobile = null;
-  var activePair = [-1, -1];
-  var lastFilmProgress = -1;
+// Canvas flock copied from the live toposlab.bio site; no framework or backend required.
+const TAU = Math.PI * 2
+const FRAME_INTERVAL = 1000 / 30
+const INK = ['#8b9990', '#6c7e71', '#455e4d', '#243d2d']
 
-  function clamp(value, low, high) { return Math.min(high, Math.max(low, value)); }
-  function smooth(low, high, value) {
-    var t = clamp((value - low) / (high - low), 0, 1);
-    return t * t * (3 - 2 * t);
+function random(seed) {
+  const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453
+  return value - Math.floor(value)
+}
+
+// The uneven edges and scattered outliers come from the same fixed flock on every visit.
+const birds = Array.from({ length: 2050 }, (_, index) => {
+  const seed = index + 1
+  const along = random(seed)
+  const across = (random(seed + 2100) + random(seed + 4200) + random(seed + 6300) - 1.5) / 1.5
+  const depth = random(seed + 8400)
+  return {
+    along,
+    across: across * (index % 13 === 0 ? 1.7 : 1),
+    drift: random(seed + 10500) - 0.5,
+    phase: random(seed + 12600) * TAU,
+    size: 0.6 + depth * depth * 2.0 + (index % 79 === 0 ? 1.4 : 0),
+    depth: Math.min(3, Math.floor(depth * 4)),
   }
+})
 
-  function measureFilm() {
-    if (!media || !frames.length) return;
-    var width = media.clientWidth;
-    var height = media.clientHeight;
-    var mobile = mobileQuery.matches;
-    if (width === measuredWidth && height === measuredHeight && mobile === measuredMobile) return;
-    measuredWidth = width;
-    measuredHeight = height;
-    measuredMobile = mobile;
-    var sourceWidth = mobile ? 960 : 1440;
-    var sourceHeight = mobile ? 540 : 810;
-    var sourceScale = sourceWidth / 1440;
-    var fit = Math.max(width / sourceWidth, height / sourceHeight);
-    var left = (width - sourceWidth * fit) / 2;
-    var top = (height - sourceHeight * fit) / 2;
-    frameMetrics = eyeKeys.map(function (key) {
-      return { x: left + key[0] * sourceScale * fit,
-        y: top + key[1] * sourceScale * fit, radius: key[2] * sourceScale * fit };
-    });
-    lastFilmProgress = -1;
+function position(bird, time, width, height) {
+  const u = bird.along
+  const breath = Math.sin(time * 0.11 + u * 4.8)
+  const widthOfFlock = 0.045 + Math.pow(Math.sin(u * Math.PI), 0.75) * 0.23
+  const center = 0.60 - Math.sin(u * Math.PI * 1.16 - 0.30) * 0.28
+    + Math.sin(u * Math.PI * 3.0 + 0.7) * 0.035
+  const ripple = Math.sin(u * 8.4 + bird.across * 2.4 - time * 0.18)
+  return {
+    x: width * (0.035 + u * 0.93 + bird.drift * 0.045 + breath * 0.012),
+    y: height * (center + bird.across * widthOfFlock + ripple * 0.032 + breath * 0.025),
+    angle: -0.12 + Math.sin(u * 5.2 + time * 0.08) * 0.25 + bird.drift * 0.5,
   }
+}
 
-  function warmFrames() {
-    if (reduced) return;
-    frames.forEach(function (frame) {
-      var image = frame.querySelector("img");
-      if (image && image.decode) image.decode().catch(function () {});
-    });
-  }
 
-  function placeFrame(index, centerX, centerY, radius) {
-    var frame = frames[index];
-    var metric = frameMetrics[index];
-    var scale = radius / metric.radius;
-    var x = centerX - scale * metric.x;
-    var y = centerY - scale * metric.y;
-    frame.style.transform = "translate3d(" + x.toFixed(2) + "px," + y.toFixed(2) + "px,0) scale(" + scale.toFixed(5) + ")";
-  }
+function initSwarm() {
+  const element = document.querySelector('.swarm-study__canvas')
+  const container = document.querySelector('.swarm-study__stage')
+  if (!element || !container) return
+  const context = element.getContext('2d', { alpha: true })
+  if (!context) return
 
-  function paintFilm(progress) {
-    if (reduced || frames.length < 2 || frameMetrics.length !== frames.length) return;
-    var nextProgress = clamp(progress, 0, 1);
-    if (Math.abs(nextProgress - lastFilmProgress) < .00001) return;
-    var position = nextProgress * (frames.length - 1);
-    var first = Math.min(frames.length - 2, Math.floor(position));
-    var second = first + 1;
-    var local = position - first;
-    if (activePair[0] !== first || activePair[1] !== second) {
-      frames.forEach(function (frame, index) {
-        var active = index === first || index === second;
-        frame.style.visibility = active ? "visible" : "hidden";
-        frame.style.willChange = active ? "transform, opacity" : "auto";
-      });
-      activePair = [first, second];
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+  let wantsMotion = !motion.matches
+  let inView = true
+  let frame = 0
+  let lastTime = 0
+  let time = 0
+  let width = 0
+  let height = 0
+  const pointer = { x: 0, y: 0, active: false, influence: 0 }
+  const flock = birds.map(bird => ({
+    ...bird, offsetX: 0, offsetY: 0, velocityX: 0, velocityY: 0,
+  }))
+  const layers = INK.map((_, depth) => flock.filter(bird => bird.depth === depth))
+
+  function draw(delta = 0) {
+    if (!context || !width || !height) return
+    context.clearRect(0, 0, width, height)
+    context.lineCap = 'round'
+    const birdScale = Math.max(0.72, Math.min(width / 1300, 1.25))
+    const radius = Math.max(95, Math.min(width * 0.16, 190))
+    const damping = Math.exp(-12 * delta)
+    pointer.influence += ((pointer.active ? 1 : 0) - pointer.influence) * (1 - Math.exp(-10 * delta))
+
+    for (let depth = 0; depth < layers.length; depth++) {
+      context.beginPath()
+      context.strokeStyle = INK[depth]
+      context.lineWidth = (0.65 + depth * 0.13) * birdScale
+      for (const bird of layers[depth]) {
+        const rest = position(bird, time, width, height)
+        let targetX = 0
+        let targetY = 0
+        if (pointer.influence > 0.001) {
+          const dx = rest.x - pointer.x
+          const dy = rest.y - pointer.y
+          const distance = Math.hypot(dx, dy)
+          if (distance < radius) {
+            const falloff = (1 - distance / radius) ** 2
+            const push = radius * 0.85 * falloff * pointer.influence * (0.85 + bird.depth * 0.08)
+            // Give a bird directly under the pointer a direction too.
+            targetX = (distance > 0.01 ? dx / distance : Math.cos(bird.phase)) * push
+            targetY = (distance > 0.01 ? dy / distance : Math.sin(bird.phase)) * push
+          }
+        }
+        // A damped spring leaves a brief wake, then returns each bird to the flock.
+        bird.velocityX = (bird.velocityX + (targetX - bird.offsetX) * 100 * delta) * damping
+        bird.velocityY = (bird.velocityY + (targetY - bird.offsetY) * 100 * delta) * damping
+        bird.offsetX += bird.velocityX * delta
+        bird.offsetY += bird.velocityY * delta
+        const x = rest.x + bird.offsetX
+        const y = rest.y + bird.offsetY
+        const turn = Math.atan2(bird.velocityY, Math.abs(bird.velocityX) + 40)
+        const angle = rest.angle + turn * Math.min(Math.hypot(bird.velocityX, bird.velocityY) / 100, 0.65)
+        const size = bird.size * birdScale
+        const wing = (0.3 + Math.sin(time * 2.1 + bird.phase) * 0.32) * size
+        const cos = Math.cos(angle)
+        const sin = Math.sin(angle)
+        const tipX = size * cos
+        const tipY = size * sin
+        const riseX = wing * sin
+        const riseY = wing * cos
+        context.moveTo(x - tipX - riseX, y - tipY + riseY)
+        context.quadraticCurveTo(
+          x - tipX * 0.5 + riseX * 0.8,
+          y - tipY * 0.5 - riseY * 0.8,
+          x, y + size * 0.18,
+        )
+        context.quadraticCurveTo(
+          x + tipX * 0.5 + riseX * 0.8,
+          y + tipY * 0.5 - riseY * 0.8,
+          x + tipX - riseX, y + tipY + riseY,
+        )
+      }
+      context.stroke()
     }
-    var start = frameMetrics[first];
-    var end = frameMetrics[second];
-    var centerX = start.x + (end.x - start.x) * local;
-    var centerY = start.y + (end.y - start.y) * local;
-    var radius = Math.exp(Math.log(start.radius) + (Math.log(end.radius) - Math.log(start.radius)) * local);
-    placeFrame(first, centerX, centerY, radius);
-    placeFrame(second, centerX, centerY, radius);
-    var blend = smooth(.72, .96, local);
-    frames[first].style.opacity = "1";
-    frames[second].style.opacity = blend.toFixed(4);
-    var showFirst = blend < 1;
-    var showSecond = blend > 0;
-    if (frames[first].style.visibility !== (showFirst ? "visible" : "hidden")) frames[first].style.visibility = showFirst ? "visible" : "hidden";
-    if (frames[second].style.visibility !== (showSecond ? "visible" : "hidden")) frames[second].style.visibility = showSecond ? "visible" : "hidden";
-    if (frames[first].style.willChange !== (showFirst ? "transform, opacity" : "auto")) frames[first].style.willChange = showFirst ? "transform, opacity" : "auto";
-    if (frames[second].style.willChange !== (showSecond ? "transform, opacity" : "auto")) frames[second].style.willChange = showSecond ? "transform, opacity" : "auto";
-    lastFilmProgress = nextProgress;
+    element?.setAttribute('data-ready', 'true')
   }
 
-  function setGrade(id) {
-    root.dataset.grade = id;
-    document.querySelectorAll(".grade-chip").forEach(function (button) {
-      button.setAttribute("aria-pressed", button.dataset.swatch === id ? "true" : "false");
-    });
-    try { localStorage.setItem("topos-grade", id); } catch (_) {}
+  function animate(now) {
+    frame = 0
+    if (!wantsMotion || !inView || document.hidden) return
+    const elapsed = lastTime ? now - lastTime : FRAME_INTERVAL
+    if (elapsed >= FRAME_INTERVAL - 0.5) {
+      const delta = Math.min(elapsed / 1000, 0.05)
+      time += delta
+      lastTime = now
+      draw(delta)
+    }
+    frame = requestAnimationFrame(animate)
   }
 
-  function updateProgress() {
-    var max = Math.max(1, document.documentElement.scrollHeight - (scrollStage ? scrollStage.clientHeight : window.innerHeight));
-    targetProgress = Math.max(0, Math.min(1, window.scrollY / max));
-    var nextChapter = targetProgress >= .67 ? 2 : targetProgress >= .22 ? 1 : 0;
-    if (nextChapter !== chapter) {
-      chapter = nextChapter;
+  function syncAnimation() {
+    if (frame) cancelAnimationFrame(frame)
+    frame = 0
+    lastTime = 0
+    if (wantsMotion && inView && !document.hidden) {
+      frame = requestAnimationFrame(animate)
     }
   }
 
-  function paintMotion(now) {
-    var dt = Math.min(.08, Math.max(0, (now - lastTime) / 1000));
-    lastTime = now;
-    if (!paused && !reduced && document.visibilityState === "visible") notationClock += dt;
-    renderedProgress += (targetProgress - renderedProgress) * (1 - Math.exp(-dt * 4.2));
-    var irisTransform = "translate(-50%, -50%) scale(" + (1 + renderedProgress * .48).toFixed(5) + ")";
-    if (irisNotations && irisTransform !== lastIrisTransform) {
-      irisNotations.style.transform = irisTransform;
-      lastIrisTransform = irisTransform;
-    }
-    if (!paused && !reduced) {
-      var notation = String(Math.floor((notationClock % 15) / 3.75));
-      if (root.dataset.notation !== notation) root.dataset.notation = notation;
-    }
-    paintFilm(renderedProgress);
-    window.requestAnimationFrame(paintMotion);
+  function resize() {
+    if (!element || !container || !context) return
+    const bounds = container.getBoundingClientRect()
+    width = bounds.width
+    height = bounds.height
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.75)
+    element.width = Math.round(width * dpr)
+    element.height = Math.round(height * dpr)
+    context.setTransform(dpr, 0, 0, dpr, 0, 0)
+    resetInteraction()
+    draw()
   }
 
-  function jump(position) {
-    var max = Math.max(0, document.documentElement.scrollHeight - (scrollStage ? scrollStage.clientHeight : window.innerHeight));
-    window.scrollTo({ top: max * position, behavior: reduced ? "auto" : "smooth" });
+  function movePointer(event) {
+    if (!wantsMotion || event.pointerType === 'touch' || !container) return
+    const bounds = container.getBoundingClientRect()
+    pointer.x = event.clientX - bounds.left
+    pointer.y = event.clientY - bounds.top
+    pointer.active = true
   }
 
-  document.querySelector(".descend")?.addEventListener("click", function () {
-    jump(chapter === 2 ? 0 : chapterPositions[chapter + 1]);
-  });
-  document.querySelector(".motion-switch")?.addEventListener("click", function () {
-    paused = !paused;
-    root.dataset.paused = String(paused);
-    this.setAttribute("aria-pressed", String(paused));
-    this.setAttribute("aria-label", paused ? "Resume photographic motion" : "Hold photographic motion");
-    this.setAttribute("title", paused ? "Resume photographic motion" : "Hold photographic motion");
-    var icon = this.querySelector("img");
-    if (icon) icon.src = paused ? "assets/identity/play.png" : "assets/identity/pause.png";
-  });
-  window.addEventListener("scroll", updateProgress, { passive: true });
-  window.addEventListener("resize", function () { updateProgress(); measureFilm(); });
-  reducedQuery.addEventListener?.("change", function (event) {
-    reduced = event.matches;
-    if (!reduced) { measureFilm(); warmFrames(); paintFilm(renderedProgress); }
-  });
-  mobileQuery.addEventListener?.("change", function () { measureFilm(); warmFrames(); });
-  try {
-    var saved = localStorage.getItem("topos-grade");
-    if (saved === "silver" || saved === "iron" || saved === "selenium") setGrade(saved);
-  } catch (_) {}
-  updateProgress();
-  measureFilm();
-  warmFrames();
-  window.requestAnimationFrame(paintMotion);
-})();
+  function leavePointer() {
+    pointer.active = false
+  }
+
+  function resetInteraction() {
+    pointer.active = false
+    pointer.influence = 0
+    for (const bird of flock) {
+      bird.offsetX = bird.offsetY = bird.velocityX = bird.velocityY = 0
+    }
+  }
+
+  const motionChanged = () => {
+    wantsMotion = !motion.matches
+    resetInteraction()
+    draw()
+    syncAnimation()
+  }
+  const visibilityChanged = () => {
+    resetInteraction()
+    syncAnimation()
+  }
+  container.addEventListener('pointerenter', movePointer, { passive: true })
+  container.addEventListener('pointermove', movePointer, { passive: true })
+  container.addEventListener('pointerleave', leavePointer, { passive: true })
+  container.addEventListener('pointercancel', leavePointer, { passive: true })
+  window.addEventListener('blur', leavePointer)
+  window.addEventListener('scroll', leavePointer, { passive: true })
+  const resizeObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null
+  resizeObserver?.observe(container)
+  window.addEventListener('resize', resize)
+  const intersectionObserver = typeof IntersectionObserver !== 'undefined'
+    ? new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting
+      if (!inView) resetInteraction()
+      syncAnimation()
+    })
+    : null
+  intersectionObserver?.observe(container)
+  motion.addEventListener('change', motionChanged)
+  document.addEventListener('visibilitychange', visibilityChanged)
+  resize()
+  syncAnimation()
+}
+
+initSwarm()
+
+for (const year of document.querySelectorAll('[data-year]')) {
+  year.textContent = String(new Date().getFullYear())
+}
