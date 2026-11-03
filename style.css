@@ -1,7 +1,7 @@
 /* Shared presentation from toposlab.bio, with no application dependencies. */
 :root {
   --font: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  color-scheme: light;
+  color-scheme: dark;
   font-family: var(--font);
   font-size: 16px;
   line-height: 1.55;
@@ -22,34 +22,34 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
 .skip-link {
   position: absolute; top: -80px; left: 12px; z-index: 200;
   padding: 10px 16px; border-radius: 6px; background: var(--accent);
-  color: white; font-size: 14px; font-weight: 500;
+  color: var(--bg); font-size: 14px; font-weight: 500;
 }
 .skip-link:focus { top: 12px; }
 main:focus { outline: none; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 :root {
-  --lab-paper: #edf0ed;
-  --lab-ink: #25352e;
-  --lab-muted: #526058;
-  --lab-line: #cbd3cc;
+  --lab-paper: #0f0f0f;
+  --lab-ink: #efefef;
+  --lab-muted: #8f8f8f;
+  --lab-line: #262626;
   --bg: var(--lab-paper);
-  --bg-raised: #fafbf8;
-  --bg-panel: #f3f5f0;
+  --bg-raised: #161616;
+  --bg-panel: #131313;
   --text: var(--lab-ink);
   --text-muted: var(--lab-muted);
-  --text-faint: #626e65;
-  --accent: #304c3e;
-  --accent-hover: #1b3426;
-  --focus: #466d52;
+  --text-faint: #7c7c7c;
+  --accent: #efefef;
+  --accent-hover: #ffffff;
+  --focus: #a8a8a8;
   --border: var(--lab-line);
   --rule: var(--lab-line);
-  --tint: #e6ebe4;
+  --tint: #1b1b1b;
 }
 
 ::selection {
-  color: #17291d;
-  background: #c9d7c8;
+  color: #0f0f0f;
+  background: #d6d6d6;
 }
 .lab-nav {
   display: flex;
@@ -67,7 +67,7 @@ main:focus { outline: none; }
 }
 .lab-nav__logo {
   display: block;
-  width: 128px;
+  width: 136px;
   height: auto;
 }
 .lab-nav nav {
@@ -110,7 +110,7 @@ main:focus { outline: none; }
 }
 .lab-hero h1 img {
   display: block;
-  width: clamp(290px, 38vw, 520px);
+  width: clamp(309px, 40.4vw, 553px);
   max-width: calc(100vw - 64px);
   height: auto;
   margin: 0 auto;
@@ -121,7 +121,7 @@ main:focus { outline: none; }
   letter-spacing: -0.025em;
 }
 .lab-about {
-  background: #fafbf8;
+  background: var(--bg-raised);
   padding: 112px 32px 108px;
 }
 .lab-about__text {
@@ -196,7 +196,7 @@ main:focus { outline: none; }
     gap: 16px;
   }
   .lab-nav__logo {
-    width: 100px;
+    width: 106px;
   }
   .lab-nav nav {
     gap: 18px;
@@ -255,7 +255,7 @@ main:focus { outline: none; }
   position: absolute;
   inset: 0;
   margin: 0;
-  color: #24362d;
+  color: #f0f0f0;
 }
 
 .swarm-study__stage,

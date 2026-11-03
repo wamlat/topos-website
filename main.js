@@ -1,7 +1,7 @@
 // Canvas flock copied from the live toposlab.bio site; no framework or backend required.
 const TAU = Math.PI * 2
 const FRAME_INTERVAL = 1000 / 30
-const INK = ['#8b9990', '#6c7e71', '#455e4d', '#243d2d']
+const INK = ['#383838', '#606060', '#9b9b9b', '#f0f0f0']
 
 function random(seed) {
   const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453
