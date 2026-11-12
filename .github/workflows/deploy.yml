@@ -30,7 +30,7 @@ jobs:
           node --check main.js
           mkdir _site
           cp index.html 404.html style.css main.js CNAME .nojekyll _site/
-          cp -R brand fonts contact _site/
+          cp -R brand fonts contact blog _site/
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:

@@ -11,6 +11,7 @@ or dataset browser.
 - `main.js` — swarm animation, cursor interaction, and reduced-motion support
 - `brand/` / `fonts/` — self-hosted logos, fallback swarm drawing, and fonts
 - `contact/index.html` — static contact page
+- `blog/` — blog index and posts
 - `404.html` — missing-page response
 - `.github/workflows/deploy.yml` — checks JavaScript syntax, stages only public files,
   and deploys to GitHub Pages on every push to `main`
