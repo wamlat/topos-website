@@ -1,0 +1,4 @@
+Latin Modern (latin-modern-*.woff2) is by GUST e-foundry (B. Jackowski, J. M. Nowacki)
+and is distributed under the GUST Font License, which permits use, embedding and redistribution:
+https://www.gust.org.pl/projects/e-foundry/licenses
+The WOFF2 files here are the web builds shipped with latex.css v1.14.0 (https://latex.vercel.app).
