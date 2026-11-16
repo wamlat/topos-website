@@ -96,4 +96,8 @@ main:focus, section:focus { outline: none; }
   .article p, .about p, .beta > p { text-align: left; }
   .running nav { gap: 1.1em; }
 }
+@media (max-width: 380px) {
+  .running { flex-wrap: wrap; gap: 4px 10px; }
+  .running nav { gap: 0.8em; font-size: 0.8em; }
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
