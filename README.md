@@ -4,13 +4,16 @@ The static version of [toposlab.bio](https://toposlab.bio/), with the same brand
 copy, layout, and cursor-reactive swarm. Plain HTML, CSS, and canvas JavaScript;
 no framework, package installation, or build step.
 
-Contact opens a direct email link. There is no backend, API, sign-in, upload page,
+Contact opens a direct email link. The egregore beta form posts through
+[FormSubmit](https://formsubmit.co/) to contact@toposlab.com (the first submission sends a
+one-time activation email to that inbox). There is no backend, API, sign-in, upload page,
 or dataset browser.
 
 - `index.html` / `style.css` — landing page and shared layout
 - `main.js` — swarm animation, cursor interaction, and reduced-motion support
 - `brand/` / `fonts/` — self-hosted logos, fallback swarm drawing, and fonts
 - `contact/index.html` — static contact page
+- `egregore/index.html` — egregore product page with the research-beta request form
 - `blog/` — blog index and posts
 - `404.html` — missing-page response
 - `.github/workflows/deploy.yml` — checks JavaScript syntax, stages only public files,

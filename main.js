@@ -216,3 +216,50 @@ initSwarm()
 for (const year of document.querySelectorAll('[data-year]')) {
   year.textContent = String(new Date().getFullYear())
 }
+
+// egregore beta form: posts through FormSubmit (no backend here). Without JavaScript the
+// form still posts and FormSubmit redirects back to #sent (shown via :target in CSS); on any
+// failure we offer a filled-in email.
+function initRequestForm() {
+  const form = document.querySelector('form.request')
+  if (!form) return
+  const status = form.querySelector('.request__status')
+  const button = form.querySelector('button[type="submit"]')
+
+  function mailtoFallback(data) {
+    const body = ['name', 'email', 'affiliation', 'message']
+      .map((key) => `${key[0].toUpperCase()}${key.slice(1)}: ${data.get(key) || ''}`)
+      .join('\n')
+    const href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent(data.get('_subject'))}&body=${encodeURIComponent(body)}`
+    status.textContent = 'Something went wrong sending that. '
+    const link = document.createElement('a')
+    link.href = href
+    link.textContent = 'Send it by email instead'
+    status.append(link, '.')
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    const data = new FormData(form)
+    if (data.get('_honey')) return
+    button.disabled = true
+    status.textContent = 'Sending…'
+    try {
+      const response = await fetch(form.dataset.ajax, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(Object.fromEntries(data)),
+      })
+      const result = await response.json().catch(() => ({}))
+      if (!response.ok || String(result.success) !== 'true') throw new Error(result.message || response.statusText)
+      form.reset()
+      status.textContent = 'Thanks — we’ll be in touch.'
+    } catch {
+      mailtoFallback(data)
+    } finally {
+      button.disabled = false
+    }
+  })
+}
+
+initRequestForm()
