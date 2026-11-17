@@ -63,7 +63,7 @@ main:focus, section:focus { outline: none; }
 .posts a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .posts .meta { display: block; color: var(--muted); font-size: 0.9em; margin-top: 0.15em; }
 
-/* egregore: \section* and a plain form set in the same ink */
+/* Egregore: \section* and a plain form set in the same ink */
 .beta h2 { font-size: 1.16em; font-weight: 700; line-height: 1.25; margin-top: 1.2em; }
 .beta > p { margin-top: 0.6em; text-align: justify; hyphens: auto; }
 .request { display: grid; gap: 1.1em; margin-top: 1.6em; }
@@ -72,7 +72,7 @@ main:focus, section:focus { outline: none; }
   width: 100%; padding: 0.3em 0; border: 0; border-bottom: 0.5px solid var(--ink); border-radius: 0;
   background: transparent; color: var(--ink); font: inherit; font-size: 1.11em; resize: vertical;
 }
-.request textarea { line-height: 1.5; }
+.request textarea { line-height: 1.5; resize: none; overflow: hidden; field-sizing: content; }
 .request input:focus, .request textarea:focus { outline: none; box-shadow: 0 1.5px 0 0 var(--ink); }
 .request button {
   justify-self: start; margin-top: 0.4em; padding: 0.45em 1.3em; border: 0.5px solid var(--ink); border-radius: 0;

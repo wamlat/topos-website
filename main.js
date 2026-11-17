@@ -217,7 +217,7 @@ for (const year of document.querySelectorAll('[data-year]')) {
   year.textContent = String(new Date().getFullYear())
 }
 
-// egregore beta form: posts through FormSubmit (no backend here). Without JavaScript the
+// Egregore beta form: posts through FormSubmit (no backend here). Without JavaScript the
 // form still posts and FormSubmit redirects back to #sent (shown via :target in CSS); on any
 // failure we offer a filled-in email.
 function initRequestForm() {
@@ -225,6 +225,16 @@ function initRequestForm() {
   if (!form) return
   const status = form.querySelector('.request__status')
   const button = form.querySelector('button[type="submit"]')
+
+  // The message box starts one line tall and grows with its text (field-sizing where supported).
+  const message = form.querySelector('textarea')
+  const fit = () => {
+    if (!message || CSS.supports('field-sizing', 'content')) return
+    message.style.height = 'auto'
+    message.style.height = `${message.scrollHeight}px`
+  }
+  message?.addEventListener('input', fit)
+  form.addEventListener('reset', () => requestAnimationFrame(fit))
 
   function mailtoFallback(data) {
     const body = ['name', 'email', 'affiliation', 'message']
