@@ -217,7 +217,7 @@ for (const year of document.querySelectorAll('[data-year]')) {
   year.textContent = String(new Date().getFullYear())
 }
 
-// Egregore beta form: posts through FormSubmit (no backend here). Without JavaScript the
+// Monad beta form: posts through FormSubmit (no backend here). Without JavaScript the
 // form still posts and FormSubmit redirects back to #sent (shown via :target in CSS); on any
 // failure we offer a filled-in email.
 function initRequestForm() {
